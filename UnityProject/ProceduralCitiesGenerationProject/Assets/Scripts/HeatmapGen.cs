@@ -11,7 +11,6 @@ public class HeatmapGen : MonoBehaviour
     public float randAmount; //set between 0 and 1 is maximum randomness applied.
     public int center;
 
-    private Texture2D heatmap;
     private Color color = Color.black;
 
     // Start is called before the first frame update
