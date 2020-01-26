@@ -10,12 +10,14 @@ public class CityNodeGenerator : MonoBehaviour
     public int blockSize; // blocksize must be a divisor of size! Script will automatically resize size if need be.
     public float removalRand; //lower is better!
     public float diagRand;
+    public float numConnectors; // connectors will always appear on the west border.
 
     private Color bg = Color.black;
     private Color node = Color.blue;
     private Color road = Color.yellow;
     private Color noConnection = Color.red;
     private Color diagonalRoad = Color.green;
+    private Color outConnector = Color.magenta;
 
     // Start is called before the first frame update
     void Start()
@@ -98,7 +100,7 @@ public class CityNodeGenerator : MonoBehaviour
                 if (nodeMap.GetPixel(x + 1, y) == bg)
                 {
                     int xPos = x + 1;
-                    while (nodeMap.GetPixel(x, xPos) != node)
+                    while (nodeMap.GetPixel(xPos, y) != node)
                     {
                         nodeMap.SetPixel(xPos, y, road);
                         xPos++;
@@ -125,6 +127,24 @@ public class CityNodeGenerator : MonoBehaviour
                         yPos++;
                         xPos--;
                     }
+                }
+            }
+        }
+
+        int count = 0;
+        float chance = (float)blockSize / size;
+        while ( count < numConnectors)
+        {
+            for (int y = 0; y < size; y += blockSize)
+            {
+                if (Random.value < chance && nodeMap.GetPixel(0, y) == node)
+                {
+                    nodeMap.SetPixel(0, y, outConnector);
+                    count++;
+                }
+                if(count >= numConnectors)
+                {
+                    break;
                 }
             }
         }
@@ -207,7 +227,7 @@ public class CityNodeGenerator : MonoBehaviour
         {
             result = false;
         }
-        Debug.Log("COUNT: " + count + " ||| " + "NCOUNT: " + nCount );
+        //Debug.Log("COUNT: " + count + " ||| " + "NCOUNT: " + nCount );
         return result;
     }
 }

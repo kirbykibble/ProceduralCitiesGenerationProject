@@ -68,6 +68,7 @@
     <Compile Include="Assets\Scripts\CityNodeGenerator.cs" />
     <Compile Include="Assets\Scripts\HeatmapGen.cs" />
     <Compile Include="Assets\Scripts\PlayerController.cs" />
+    <Compile Include="Assets\Scripts\SurbanNodeGenerator.cs" />
     <None Include="Assets\ImportedAssets\Barrier Pack\Shaders\Contrast Stretch\MinMaxReduction.shader" />
     <None Include="Assets\ImportedAssets\Barrier Pack\Shaders\Contrast Stretch\Apply.shader" />
     <None Include="Assets\ImportedAssets\Barrier Pack\Shaders\GlobalFog.shader" />
@@ -84,6 +85,9 @@
     </Reference>
     <Reference Include="Unity.Timeline">
       <HintPath>C:/Users/A00986529/Desktop/ProceduralCitiesGenerationProject/UnityProject/ProceduralCitiesGenerationProject/Library/ScriptAssemblies/Unity.Timeline.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.CollabProxy.Editor">
+      <HintPath>C:/Users/A00986529/Desktop/ProceduralCitiesGenerationProject/UnityProject/ProceduralCitiesGenerationProject/Library/ScriptAssemblies/Unity.CollabProxy.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.TextMeshPro">
       <HintPath>C:/Users/A00986529/Desktop/ProceduralCitiesGenerationProject/UnityProject/ProceduralCitiesGenerationProject/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
