@@ -20,11 +20,11 @@ RenderSettings:
   m_FogDensity: 0.01
   m_LinearFogStart: 0
   m_LinearFogEnd: 300
-  m_AmbientSkyColor: {r: 0.212, g: 0.227, b: 0.259, a: 1}
+  m_AmbientSkyColor: {r: 0.3584906, g: 0.3584906, b: 0.3584906, a: 1}
   m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
   m_AmbientIntensity: 1
-  m_AmbientMode: 0
+  m_AmbientMode: 3
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
   m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
   m_HaloStrength: 0.5
@@ -238,7 +238,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 352111115}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.51846695, y: 1.23, z: -0.43379214}
+  m_LocalPosition: {x: 0.51846695, y: 1.23, z: -22.02}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1329961062}
@@ -332,7 +332,7 @@ Transform:
   m_GameObject: {fileID: 488120449}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 10, y: 10, z: 10}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 1
@@ -349,6 +349,8 @@ GameObject:
   - component: {fileID: 692319273}
   - component: {fileID: 692319274}
   - component: {fileID: 692319275}
+  - component: {fileID: 692319277}
+  - component: {fileID: 692319276}
   m_Layer: 0
   m_Name: Controller
   m_TagString: Untagged
@@ -420,6 +422,35 @@ MonoBehaviour:
   CDSRand: 0.2
   numConnectors: 2
   offsetSize: 50
+--- !u!114 &692319276
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 692319271}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 741e63c9190d2c74094b1c1ad02bd1a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  windows:
+  - {fileID: 2800000, guid: 0642ef56fab88fa4aaaf7d6416c2afbe, type: 3}
+  - {fileID: 2800000, guid: 1a5b218c57e8f1b4ca334d49805dc354, type: 3}
+  - {fileID: 2800000, guid: b7aa67fc1d969af4b91e79c72af5102e, type: 3}
+--- !u!114 &692319277
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 692319271}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e327ca793495784aa9daf541b3f5f41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  controller: {fileID: 692319271}
 --- !u!1 &1215372643
 GameObject:
   m_ObjectHideFlags: 0
@@ -447,8 +478,8 @@ Light:
   m_Enabled: 1
   serializedVersion: 9
   m_Type: 1
-  m_Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
-  m_Intensity: 1
+  m_Color: {r: 0.5377358, g: 0.5377358, b: 0.5377358, a: 1}
+  m_Intensity: 1.26
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -457,10 +488,10 @@ Light:
     m_Type: 2
     m_Resolution: -1
     m_CustomResolution: -1
-    m_Strength: 1
-    m_Bias: 0.05
-    m_NormalBias: 0.4
-    m_NearPlane: 0.2
+    m_Strength: 0.405
+    m_Bias: 0.174
+    m_NormalBias: 0
+    m_NearPlane: 0.33
     m_CullingMatrixOverride:
       e00: 1
       e01: 0
@@ -487,7 +518,7 @@ Light:
     serializedVersion: 2
     m_Bits: 4294967295
   m_RenderingLayerMask: 1
-  m_Lightmapping: 4
+  m_Lightmapping: 1
   m_LightShadowCasterMode: 0
   m_AreaSize: {x: 1, y: 1}
   m_BounceIntensity: 1
@@ -504,13 +535,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1215372643}
-  m_LocalRotation: {x: 0.40821788, y: -0.23456968, z: 0.10938163, w: 0.8754261}
-  m_LocalPosition: {x: 0, y: 3, z: 0}
+  m_LocalRotation: {x: 0.3567711, y: -0.28168917, z: 0.07163826, w: 0.88782513}
+  m_LocalPosition: {x: -4.29, y: 8.45, z: -7.76}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+  m_LocalEulerAnglesHint: {x: 42.366, y: -37.429, z: -5.7320004}
 --- !u!1 &1329961061
 GameObject:
   m_ObjectHideFlags: 0

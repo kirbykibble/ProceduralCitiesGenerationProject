@@ -65,6 +65,8 @@
     <Compile Include="Assets\ImportedAssets\Barrier Pack\Scripts\ContrastStretch.cs" />
     <Compile Include="Assets\ImportedAssets\Barrier Pack\Scripts\GlobalFog.cs" />
     <Compile Include="Assets\ImportedAssets\Barrier Pack\Scripts\PostEffectsBase.cs" />
+    <Compile Include="Assets\Scripts\Building.cs" />
+    <Compile Include="Assets\Scripts\BuildingCreator.cs" />
     <Compile Include="Assets\Scripts\CityNodeGenerator.cs" />
     <Compile Include="Assets\Scripts\HeatmapGen.cs" />
     <Compile Include="Assets\Scripts\PlayerController.cs" />
