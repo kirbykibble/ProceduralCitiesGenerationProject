@@ -6,11 +6,11 @@ using System.IO;
 
 public class CityNodeGenerator : MonoBehaviour
 {
-    public int size;
-    public int blockSize; // blocksize must be a divisor of size! Script will automatically resize size if need be.
-    public float removalRand; //lower is better!
-    public float diagRand;
-    public float numConnectors; // connectors will always appear on the west border.
+    private int size;
+    private int blockSize; // blocksize must be a divisor of size! Script will automatically resize size if need be.
+    private float removalRand; //lower is better!
+    private float diagRand;
+    private float numConnectors; // connectors will always appear on the west border.
 
     private Color bg = Color.black;
     private Color node = Color.blue;
@@ -22,8 +22,23 @@ public class CityNodeGenerator : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        size = size - (size % blockSize);
-        size++;
+        
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        
+    }
+
+    public bool generateNode(int s, int bs, float rr, float dr, float nc)
+    {
+        size = s;
+        blockSize = bs;
+        removalRand = (float)rr;
+        diagRand = (float)dr;
+        numConnectors = (float)nc;
+
         Texture2D nodeMap = new Texture2D(size, size);
 
         //sets background
@@ -39,7 +54,7 @@ public class CityNodeGenerator : MonoBehaviour
         for (int x = 0; x < size; x += blockSize)
         {
             //for left to right
-            for(int y = 0; y < size; y += blockSize)
+            for (int y = 0; y < size; y += blockSize)
             {
                 nodeMap.SetPixel(x, y, node);
             }
@@ -48,7 +63,7 @@ public class CityNodeGenerator : MonoBehaviour
         //creates lateral road connections. 
         for (int x = 0; x < size; x += blockSize)
         {
-            for(int y = 0; y < size; y += blockSize)
+            for (int y = 0; y < size; y += blockSize)
             {
                 //if a road has been decidedly removed. Only removes one road per node. Ensures that no node has more than 2 removed connections.
                 if (y + 1 < size && nodeCheck(nodeMap, true, x, y) && Random.value < removalRand) //if the north pixel isn't out of bounds
@@ -61,21 +76,21 @@ public class CityNodeGenerator : MonoBehaviour
                     nodeMap.SetPixel(x + 1, y, noConnection);
                     nodeMap.SetPixel(x + blockSize - 1, y, noConnection);
                 }
-                
+
             }
         }
-        
+
         //creates diagonal connections.
         for (int x = 0; x < size; x += blockSize)
         {
             for (int y = 0; y < size; y += blockSize)
             {
-                if(x + 1 < size && y + 1 < size && Random.value < diagRand && diagCheck(nodeMap, true, x,y)) //if the top right connection isn't out of bounds. 
+                if (x + 1 < size && y + 1 < size && Random.value < diagRand && diagCheck(nodeMap, true, x, y)) //if the top right connection isn't out of bounds. 
                 {
                     nodeMap.SetPixel(x + 1, y + 1, diagonalRoad);
                     nodeMap.SetPixel(x + blockSize - 1, y + blockSize - 1, diagonalRoad);
                 }
-                if(x - 1 > 0 && y + 1 < size && Random.value < diagRand && diagCheck(nodeMap, false, x, y)) //if the top left connection isn't out of bounds
+                if (x - 1 > 0 && y + 1 < size && Random.value < diagRand && diagCheck(nodeMap, false, x, y)) //if the top left connection isn't out of bounds
                 {
                     nodeMap.SetPixel(x - 1, y + 1, diagonalRoad);
                     nodeMap.SetPixel(x - blockSize + 1, y + blockSize - 1, diagonalRoad);
@@ -133,7 +148,7 @@ public class CityNodeGenerator : MonoBehaviour
 
         int count = 0;
         float chance = (float)blockSize / size;
-        while ( count < numConnectors)
+        while (count < numConnectors)
         {
             for (int y = 0; y < size; y += blockSize)
             {
@@ -142,7 +157,7 @@ public class CityNodeGenerator : MonoBehaviour
                     nodeMap.SetPixel(0, y, outConnector);
                     count++;
                 }
-                if(count >= numConnectors)
+                if (count >= numConnectors)
                 {
                     break;
                 }
@@ -152,12 +167,8 @@ public class CityNodeGenerator : MonoBehaviour
         byte[] bytes = nodeMap.EncodeToPNG();
         Object.Destroy(nodeMap);
         File.WriteAllBytes(Application.dataPath + "/../Assets/Debug/nodeMapOut.png", bytes);
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        return true;
     }
     
     bool diagCheck(Texture2D map, bool tr, int x, int y) //pass the pixel of the current node.

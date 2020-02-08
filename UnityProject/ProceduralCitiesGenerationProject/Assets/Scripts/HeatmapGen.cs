@@ -6,16 +6,30 @@ using System.IO;
 
 public class HeatmapGen : MonoBehaviour
 {
-    public int size;
-    public float randomness; //set between 0 and 1
-    public float randAmount; //set between 0 and 1 is maximum randomness applied.
-    public int center;
+    private int size;
+    private float randomness; //set between 0 and 1
+    private float randAmount; //set between 0 and 1 is maximum randomness applied.
+    private int center;
 
     private Color color = Color.black;
 
     // Start is called before the first frame update
     void Start()
     {
+
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        
+    }
+
+    public bool generateHeatmap(int s, float r, float ra)
+    {
+        size = s;
+        randomness = (float)r;
+        randAmount = (float)ra;
 
         Texture2D heatmap = new Texture2D(size, size);
         center = (size - (size % 2)) / 2;
@@ -41,12 +55,12 @@ public class HeatmapGen : MonoBehaviour
                     int upOrDown = Random.Range(0, 2);
                     float amtToChange = Random.Range(0, randAmount * 100);
                     amtToChange = amtToChange / 100;
-                    if(upOrDown == 0)
+                    if (upOrDown == 0)
                     {
                         //shifts the heatmap up
                         output += amtToChange;
                     }
-                    if(upOrDown == 1)
+                    if (upOrDown == 1)
                     {
                         //shifts the heatmap down
                         output -= amtToChange;
@@ -73,11 +87,7 @@ public class HeatmapGen : MonoBehaviour
         byte[] bytes = heatmap.EncodeToPNG();
         Object.Destroy(heatmap);
         File.WriteAllBytes(Application.dataPath + "/../Assets/Debug/HeatmapOut.png", bytes);
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        return true;
     }
 }

@@ -87,9 +87,10 @@ public class Building : MonoBehaviour
                     mat.SetTexture("_MainTex", bottomTex);
 
                     int tw = chosenTexture.width;
-                    int th = chosenTexture.height; 
+                    int th = chosenTexture.height;
 
-                    float scale = (float)width / tw / 10;
+                    //float scale = (float)width / tw / 10;
+                    float scale = 0.25f;
 
                     mat.SetTextureScale("_MainTex", new Vector2(scale, 1));
                 }
@@ -342,6 +343,9 @@ public class Building : MonoBehaviour
         if (isCirc)
         {
             float radius = (float)a;
+            float circumference = (float)(radius * 2) * Mathf.PI;
+            lowerHeight = Random.Range(4, 7); //overwrites the lowerheight. Looks too tall if using the rect scales.
+            upperHeight = height - lowerHeight;
 
             GameObject upper = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
             GameObject lower = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
@@ -352,15 +356,16 @@ public class Building : MonoBehaviour
             mat.SetTexture("_MainTex", chosenTexture);
             int tw = chosenTexture.width;
             int th = chosenTexture.height;
-            float scale = (float)height / th * 2;
-            mat.SetTextureScale("_MainTex", new Vector2(scale, 1));
+            float scale = (float)circumference / tw * 2;
+            float heightScale = (float)height / th * 10;
+            mat.SetTextureScale("_MainTex", new Vector2(scale, heightScale));
 
             mat = lower.GetComponent<Renderer>().material;
             mat.SetTexture("_MainTex", bottomTex);
             tw = bottomTex.width;
             th = bottomTex.height;
-            scale = (float)radius / tw / 10;
-            mat.SetTextureScale("_MainTex", new Vector2(1, scale));
+            scale = (float)circumference / tw * 2;
+            mat.SetTextureScale("_MainTex", new Vector2(scale, 1));
 
             upper.transform.SetParent(building.transform);
             lower.transform.SetParent(building.transform);
