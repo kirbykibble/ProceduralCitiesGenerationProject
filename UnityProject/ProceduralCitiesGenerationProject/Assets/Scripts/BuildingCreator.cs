@@ -17,6 +17,8 @@ public class BuildingCreator : MonoBehaviour
     private Color diagonalRoad = Color.green;
     private Color outConnector = Color.magenta;
 
+    private bool landmark = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -52,9 +54,7 @@ public class BuildingCreator : MonoBehaviour
         float xOffset = 0.0f;
         float yOffset = 0.0f;
         float roadSize = 10.0f; //temporary variable. Will update later.
-
-
-
+        
         if (File.Exists("Assets/Debug/HeatmapOut.png"))
         {
             fileData = File.ReadAllBytes("Assets/Debug/HeatmapOut.png");
@@ -79,6 +79,11 @@ public class BuildingCreator : MonoBehaviour
         floor.transform.localScale = floorSize;
         floor.transform.position = floorPos;
 
+        int center = (heatmap.width - (heatmap.width % 2)) / 2;
+        Debug.Log("CENTER: " + center);
+        float redCount;
+        float centerClose;
+
         //determines the total density of the heatmap
         for (int x = 0; x < cNodeMap.width; x++)
         {
@@ -100,15 +105,38 @@ public class BuildingCreator : MonoBehaviour
             for (int y = 0; y < cNodeMap.height; y++)
             {
                 Color curPixel = cNodeMap.GetPixel(x, y);
-                if (curPixel == bg || curPixel == noConnection) //accounts for everything
+                bool dn = cNodeMap.GetPixel(x + 1, y) == diagonalRoad || cNodeMap.GetPixel(x - 1, y) == diagonalRoad || cNodeMap.GetPixel(x, y + 1) == diagonalRoad || cNodeMap.GetPixel(x, y - 1) == diagonalRoad ? true : false;
+
+                if ((curPixel == bg || curPixel == noConnection) && !dn) //accounts for everything
                 {
+                    bool isLandmark = false;
                     //compare the current pixel to the total density.
                     float buildingScale = heatmap.GetPixel(x, y).r;
                     buildingScale = (float) buildingScale / maxDens;
 
                     int width = Random.Range(maxSize - variance, maxSize);
                     int length = Random.Range(maxSize - variance, maxSize);
-                    float height = (float) maxHeight * buildingScale * 2;
+                    float height = (float) maxHeight * buildingScale * 2 + Random.Range(-variance, variance);
+
+                    redCount = (float)heatmap.GetPixel(x, y).r;
+                    float iClose = (Mathf.Abs(x - center));
+                    iClose = iClose / center;
+                    iClose = 1 - iClose;
+
+                    float jClose = (Mathf.Abs(y - center));
+                    jClose = jClose / center;
+                    jClose = 1 - jClose;
+
+                    float output = iClose + jClose;
+                    output = output / 2;
+
+                    if (redCount == 1 && !landmark && Random.value < output)
+                    {
+                        width = maxSize;
+                        length = maxSize;
+                        landmark = true;
+                        isLandmark = true;
+                    }
 
                     float xMax = (float)maxSize - (width / 2);
                     float yMax = (float)maxSize - (length / 2);
@@ -118,11 +146,13 @@ public class BuildingCreator : MonoBehaviour
                     float xPos = xOffset + Random.Range(xMin, xMax);
                     float yPos = yOffset + Random.Range(yMin, yMax);
 
+
                     if(height != 0)
                     {
-                        if (Random.value < buildingVariation) // if variance is high, generate more cylindrical buildings.
+                        if (Random.value < buildingVariation && !isLandmark) // if variance is high, generate more cylindrical buildings.
                         {
-                            //if circular, just use the width as size, and xPos as placement?.
+                            //if circular, just use the width as size, and xPos as placement
+                            //y pos needs to be modified due to cylinder scaling diferences
                             yPos = yOffset + Random.Range(xMin, xMax);
                             height /= 2;
                             b.createCirc(width, height, xPos, yPos);

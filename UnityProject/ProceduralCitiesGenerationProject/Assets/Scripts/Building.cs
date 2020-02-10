@@ -7,8 +7,10 @@ public class Building : MonoBehaviour
     public List<Texture> windows;
     public List<Texture> doors;
     public List<Texture> bottom;
+    public List<Texture> helipads;
 
     public float multipleDoorRand;
+    public float heliRand;
 
     // Start is called before the first frame update
     void Start()
@@ -23,9 +25,9 @@ public class Building : MonoBehaviour
     }
 
     //length, width, height, x pos, z pos, y pos (default 0)
-    public void createCubic(float l, float w, float h, float x, float z, float y = 0, float rotation = 0)
+    public void createCubic(float l, float w, float h, float x, float z, float y = 0, float rotation = 0, bool landmark = false)
     {
-        createBuilding(l, w, h, x, y, z, true, rotation: rotation);
+        createBuilding(l, w, h, x, y, z, true, rotation: rotation, landmark: landmark);
     }
 
     //opposite, adjacent, height, x pos, z pos, y pos (default 0)
@@ -40,7 +42,7 @@ public class Building : MonoBehaviour
         createBuilding(r, c: h, d: x, e: y, f: z, isCirc: true);
     }
 
-    private void createBuilding(float a = 0, float b = 0, float c = 0, float d = 0, float e = 0, float f = 0, bool isCubic = false, bool isTri = false, bool isCirc = false, float rotation = 0)
+    private void createBuilding(float a = 0, float b = 0, float c = 0, float d = 0, float e = 0, float f = 0, bool isCubic = false, bool isTri = false, bool isCirc = false, bool landmark = false, float rotation = 0)
     {
         //parameters a and b are variable. 
         float x = (float)d;
@@ -60,6 +62,9 @@ public class Building : MonoBehaviour
         idx = Random.Range(0, doors.Count);
         Texture doorTex = doors[idx];
 
+        idx = Random.Range(0, helipads.Count);
+        Texture heliTex = helipads[idx];
+
         //building placement
         Vector3 bPos = new Vector3(x, y, z);
         GameObject building = new GameObject();
@@ -73,6 +78,7 @@ public class Building : MonoBehaviour
 
             List<GameObject> parts = new List<GameObject>();
             string[] names = { "north", "east", "south", "west", "northU", "eastU", "southU", "westU", "roof" };
+
             for(int i = 0; i < names.Length; i++)
             {
                 GameObject temp = GameObject.CreatePrimitive(PrimitiveType.Quad);
@@ -107,6 +113,23 @@ public class Building : MonoBehaviour
 
                     mat.SetTextureScale("_MainTex", new Vector2(1, scale));
                 }
+                else if(i == 8) // for roof
+                {
+                    Material roof = temp.GetComponent<Renderer>().material;
+                    Color rc = Color.black;
+                    float mod = Random.value;
+                    rc.r += mod;
+                    rc.g += mod;
+                    rc.b += mod;
+
+                    roof.SetColor("_Color", rc);
+
+                    if(Random.value < heliRand)
+                    {
+                        roof.SetTexture("_MainTex", heliTex);
+                    }
+                }
+
             }
             //size 
             Vector3 EW = new Vector3(length, lowerHeight, 1);  //length applies to east and west facing.
@@ -349,8 +372,10 @@ public class Building : MonoBehaviour
 
             GameObject upper = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
             GameObject lower = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
+            GameObject roof = GameObject.CreatePrimitive(PrimitiveType.Cylinder); // 0.000000000001
             upper.name = "upper";
             lower.name = "lower";
+            roof.name = "roof";
 
             Material mat = upper.GetComponent<Renderer>().material;
             mat.SetTexture("_MainTex", chosenTexture);
@@ -367,14 +392,29 @@ public class Building : MonoBehaviour
             scale = (float)circumference / tw * 2;
             mat.SetTextureScale("_MainTex", new Vector2(scale, 1));
 
+            Material r = roof.GetComponent<Renderer>().material;
+            Color rc = Color.black;
+            float mod = Random.value;
+            rc.r += mod;
+            rc.g += mod;
+            rc.b += mod;
+            if (Random.value < heliRand)
+            {
+                r.SetTexture("_MainTex", heliTex);
+            }
+            r.SetColor("_Color", rc);
+
             upper.transform.SetParent(building.transform);
             lower.transform.SetParent(building.transform);
+            roof.transform.SetParent(building.transform);
 
             upper.transform.localScale = new Vector3(radius, upperHeight, radius);
             lower.transform.localScale = new Vector3(radius, lowerHeight, radius);
+            roof.transform.localScale = new Vector3(radius, 0.000000000001f, radius);
 
             upper.transform.position = new Vector3(0, lowerHeight * 2 + upperHeight, 0);
             lower.transform.position = new Vector3(0, lowerHeight, 0);
+            roof.transform.position = new Vector3(0, lowerHeight * 2 + upperHeight * 2 + 0.01f, 0);
 
         }
 

@@ -467,7 +467,10 @@ MonoBehaviour:
   - {fileID: 2800000, guid: 71058b732c0fdfb4e9e5dded36513d88, type: 3}
   bottom:
   - {fileID: 2800000, guid: 73b8074da50ffce4f9dbff66ae33e4d7, type: 3}
+  helipads:
+  - {fileID: 2800000, guid: 5474c89373aacae428675c8799e39dc4, type: 3}
   multipleDoorRand: 0.2
+  heliRand: 0.02
 --- !u!114 &692319279
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -487,11 +490,11 @@ MonoBehaviour:
   cityNodeRemovalRand: 0.4
   cityNodeDiagRand: 0.2
   cityNodeNumConnectors: 2
-  maxSize: 35
-  maxHeight: 300
-  variance: 25
+  maxSize: 45
+  maxHeight: 400
+  variance: 15
   buildingGap: 5
-  buildingVariation: 0.2
+  buildingVariation: 0.02
   controller: {fileID: 692319271}
 --- !u!1 &1215372643
 GameObject:
