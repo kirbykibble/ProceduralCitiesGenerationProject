@@ -6,11 +6,11 @@ using System.IO;
 
 public class SurbanNodeGenerator : MonoBehaviour
 {
-    public int size;
-    public int blockSize;
-    public float CDSRand; // Cul-De-Sac likeliness to spawn
-    public float numConnectors; // connectors will always appear on the east border.
-    public int offsetSize; // should be smaller than the size.
+    private int size;
+    private int blockSize;
+    private float CDSRand; // Cul-De-Sac likeliness to spawn
+    private float numConnectors; // connectors will always appear on the east border.
+    private int offsetSize; // should be smaller than the size. ##DEPRECATED##
 
     private Color bg = Color.black;
     private Color node = Color.blue;
@@ -21,11 +21,13 @@ public class SurbanNodeGenerator : MonoBehaviour
     private Color offsetNodes = Color.cyan;
     private Color offsetCDS = Color.white;
 
-    // Start is called before the first frame update
-    void Start()
+    public bool createSurbanNodemap(int s, int bs, float cdsr, float nc)
     {
-        size = size - (size % blockSize);
-        size++;
+        size = s;
+        blockSize = bs;
+        CDSRand = cdsr;
+        numConnectors = nc;
+
         Texture2D nodeMap = new Texture2D(size, size);
 
         //sets background
@@ -43,7 +45,7 @@ public class SurbanNodeGenerator : MonoBehaviour
             //for left to right
             for (int y = 0; y < size; y += blockSize)
             {
-                if(Random.value < CDSRand && cdsCheck(nodeMap, x, y))
+                if (Random.value < CDSRand && cdsCheck(nodeMap, x, y))
                 {
                     nodeMap.SetPixel(x, y, cds);
                 }
@@ -63,7 +65,7 @@ public class SurbanNodeGenerator : MonoBehaviour
             for (int y = 0; y < size; y += blockSize)
             {
                 //if current node is assigned as a cds.
-                if(nodeMap.GetPixel(x, y) == cds) // this isn't the issue. Reports correct nodes.
+                if (nodeMap.GetPixel(x, y) == cds) // this isn't the issue. Reports correct nodes.
                 {
                     // if not out of bounds AND passes rng. If passes, this connection is deemed as the only connector for the cds
                     bool isNorth = false;
@@ -73,7 +75,7 @@ public class SurbanNodeGenerator : MonoBehaviour
 
                     bool assigned = false;
 
-                    while(!assigned) //ensures that something gets assigned.
+                    while (!assigned) //ensures that something gets assigned.
                     {
                         isNorth = false;
                         isEast = false;
@@ -113,38 +115,38 @@ public class SurbanNodeGenerator : MonoBehaviour
                     Debug.Log("WEST: " + isWest + " AT: " + x + ", " + y);
                     */
 
-                    if(!isNorth) // if the only connection is NOT north, then remove the north connection
+                    if (!isNorth) // if the only connection is NOT north, then remove the north connection
                     {
                         nodeMap.SetPixel(x, y + 1, noConnection); // remove north connection
                         nodeMap.SetPixel(x, y - 1 + blockSize, noConnection);
 
                         //Debug.Log("I HAVE DRAWN AT: " + x + ", " + y + " (+1) || MY PERMISSION IS NORTH: " + !isNorth);
                         //Debug.Log("I HAVE DRAWN AT: " + x + ", " + (y-1+blockSize) + " (y - 1 + blocksize) || MY PERMISSION IS NORTH: " + !isNorth);
-                        
+
                     }
-                    if(!isEast)
+                    if (!isEast)
                     {
                         nodeMap.SetPixel(x + 1, y, noConnection); // remove east connection
                         nodeMap.SetPixel(x - 1 + blockSize, y, noConnection);
 
-                       // Debug.Log("I HAVE DRAWN AT: " + (x+1) + " (+1) , " + y + " || MY PERMISSION IS EAST: " + !isEast);
-                       // Debug.Log("I HAVE DRAWN AT: " + (x-1+blockSize) + " (-1+blockSize), " + y + " || MY PERMISSION IS NORTH: " + !isEast);
+                        // Debug.Log("I HAVE DRAWN AT: " + (x+1) + " (+1) , " + y + " || MY PERMISSION IS EAST: " + !isEast);
+                        // Debug.Log("I HAVE DRAWN AT: " + (x-1+blockSize) + " (-1+blockSize), " + y + " || MY PERMISSION IS NORTH: " + !isEast);
                     }
-                    if(!isSouth)
+                    if (!isSouth)
                     {
                         nodeMap.SetPixel(x, y - 1, noConnection); // remove south connection
                         nodeMap.SetPixel(x, y + 1 - blockSize, noConnection);
 
-                       // Debug.Log("I HAVE DRAWN AT: " + x + ", " + (y-1) +  " (-1) || MY PERMISSION IS SOUTH: " + !isSouth);
-                       // Debug.Log("I HAVE DRAWN AT: " + x + ", " + (y + 1 - blockSize) + " (y + 1 - blocksize) || MY PERMISSION IS SOUTH: " + !isSouth);
+                        // Debug.Log("I HAVE DRAWN AT: " + x + ", " + (y-1) +  " (-1) || MY PERMISSION IS SOUTH: " + !isSouth);
+                        // Debug.Log("I HAVE DRAWN AT: " + x + ", " + (y + 1 - blockSize) + " (y + 1 - blocksize) || MY PERMISSION IS SOUTH: " + !isSouth);
                     }
-                    if(!isWest)
+                    if (!isWest)
                     {
                         nodeMap.SetPixel(x - 1, y, noConnection); // remove west connection
                         nodeMap.SetPixel(x + 1 - blockSize, y, noConnection);
 
-                       // Debug.Log("I HAVE DRAWN AT: " + (x - 1) + " (-1) , " + y + " || MY PERMISSION IS WEST: " + !isWest);
-                       // Debug.Log("I HAVE DRAWN AT: " + (x + 1 + blockSize) + " (+1-blockSize), " + y + " || MY PERMISSION IS NORTH: " + !isWest);
+                        // Debug.Log("I HAVE DRAWN AT: " + (x - 1) + " (-1) , " + y + " || MY PERMISSION IS WEST: " + !isWest);
+                        // Debug.Log("I HAVE DRAWN AT: " + (x + 1 + blockSize) + " (+1-blockSize), " + y + " || MY PERMISSION IS NORTH: " + !isWest);
                     }
                 }
                 else
@@ -160,7 +162,7 @@ public class SurbanNodeGenerator : MonoBehaviour
             //for left to right
             for (int y = 0; y < size; y += blockSize)
             {
-                if(nodeMap.GetPixel(x,y) == noConnection)
+                if (nodeMap.GetPixel(x, y) == noConnection)
                 {
                     nodeMap.SetPixel(x, y, node);
                     nodeMap.SetPixel(x - 2 + blockSize, y, bg);
@@ -215,15 +217,17 @@ public class SurbanNodeGenerator : MonoBehaviour
             }
         }
 
-        if(offsetSize > size) // if someone accidentally makes the offset bigger than the size, than the offset size automatically becomes half the size.
+        /* ###DEPRECATED###
+        if (offsetSize > size) // if someone accidentally makes the offset bigger than the size, than the offset size automatically becomes half the size.
         {
             offsetSize = size / 2;
         }
         offsetSize += offsetSize % blockSize - 1; // rounds up to the nearest block. I hope.
         for (int x = offsetSize; x < size; x += blockSize)
         {
-            for (int y = offsetSize; y < size; y += blockSize) {
-                if(nodeMap.GetPixel(x, y) == cds)
+            for (int y = offsetSize; y < size; y += blockSize)
+            {
+                if (nodeMap.GetPixel(x, y) == cds)
                 {
                     nodeMap.SetPixel(x, y, offsetCDS);
                 }
@@ -232,11 +236,18 @@ public class SurbanNodeGenerator : MonoBehaviour
                     nodeMap.SetPixel(x, y, offsetNodes);
                 }
             }
-        }
+        }*/
 
         byte[] bytes = nodeMap.EncodeToPNG();
         Object.Destroy(nodeMap);
         File.WriteAllBytes(Application.dataPath + "/../Assets/Debug/SurbanNodeMapOut.png", bytes);
+        return true;
+    }
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        
     }
 
     // Update is called once per frame

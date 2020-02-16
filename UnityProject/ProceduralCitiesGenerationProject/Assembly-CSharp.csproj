@@ -70,11 +70,15 @@
     <Compile Include="Assets\Scripts\CityNodeGenerator.cs" />
     <Compile Include="Assets\Scripts\Deprecated Scripts\BuildingDeprecated.cs" />
     <Compile Include="Assets\Scripts\HeatmapGen.cs" />
+    <Compile Include="Assets\Scripts\House.cs" />
+    <Compile Include="Assets\Scripts\HouseCreator.cs" />
+    <Compile Include="Assets\Scripts\houseMap.cs" />
     <Compile Include="Assets\Scripts\MainController.cs" />
     <Compile Include="Assets\Scripts\PlayerController.cs" />
     <Compile Include="Assets\Scripts\SurbanNodeGenerator.cs" />
     <None Include="Assets\ImportedAssets\Barrier Pack\Shaders\Contrast Stretch\MinMaxReduction.shader" />
     <None Include="Assets\ImportedAssets\Barrier Pack\Shaders\Contrast Stretch\Apply.shader" />
+    <None Include="Assets\ImportedAssets\Low Poly Buildings Lite\ReadMe.txt" />
     <None Include="Assets\ImportedAssets\Barrier Pack\Shaders\GlobalFog.shader" />
     <None Include="Assets\ImportedAssets\Barrier Pack\Shaders\Contrast Stretch\Luminance.shader" />
     <None Include="Assets\ImportedAssets\Barrier Pack\Shaders\Contrast Stretch\Adaptation.shader" />
