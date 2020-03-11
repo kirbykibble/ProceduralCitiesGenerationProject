@@ -7,7 +7,7 @@ public class BuildingCreator : MonoBehaviour
 {
     //test function for building.cs
     public GameObject controller;
-    public GameObject floor;
+    //public GameObject floor;
     private Building b;
 
     private Color bg = Color.black;
@@ -63,7 +63,10 @@ public class BuildingCreator : MonoBehaviour
 
             Debug.Log("Successfully loaded heatmap");
         }
-        else { Debug.Log(" ERROR: File not found"); }
+        else {
+            Debug.Log(" ERROR: File not found");
+            return false;
+        }
 
         if (File.Exists("Assets/Debug/nodeMapOut.png"))
         {
@@ -72,12 +75,15 @@ public class BuildingCreator : MonoBehaviour
             cNodeMap.LoadImage(fileData);
             Debug.Log("Node successfully read");
         }
-        else { Debug.Log(" ERROR: File not found"); }
+        else {
+            Debug.Log(" ERROR: File not found");
+            return false;
+        }
 
         Vector3 floorPos = new Vector3((maxSize * heatmap.width) / 2, 1, (maxSize * heatmap.height) / 2);
         Vector3 floorSize = new Vector3((maxSize * heatmap.width) / 8, 1, (maxSize * heatmap.height) / 8);
-        floor.transform.localScale = floorSize;
-        floor.transform.position = floorPos;
+        //floor.transform.localScale = floorSize;
+        //floor.transform.position = floorPos;
 
         int center = (heatmap.width - (heatmap.width % 2)) / 2;
         Debug.Log("CENTER: " + center);

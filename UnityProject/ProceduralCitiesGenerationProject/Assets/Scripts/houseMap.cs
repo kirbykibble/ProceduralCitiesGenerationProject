@@ -18,8 +18,8 @@ public class houseMap : MonoBehaviour
 
     private Color smallHouse = Color.red;
     private Color richHouse = Color.cyan;
-    private Color highDens = Color.magenta;
-    private Color util = Color.gray;
+    private Color highDens = new Vector4(0, .4f, 0, 1);
+    private Color util = new Vector4(0.2f, 0.2f, 0.2f, 1);
     private Color school = Color.white;
     private Color uni = new Vector4(1, 0.6f, 0, 1);
 

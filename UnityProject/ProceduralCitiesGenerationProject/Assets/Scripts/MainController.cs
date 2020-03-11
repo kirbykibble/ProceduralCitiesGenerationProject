@@ -6,6 +6,7 @@ public class MainController : MonoBehaviour
 {
     public bool generateBuildings;
     public bool generateHouses;
+    public bool generatePathing;
 
     public int citySize;
     public int cityBlockSize;
@@ -27,11 +28,12 @@ public class MainController : MonoBehaviour
     public int buildingGap;
     public float buildingVariation;
 
-    public int smallSize;
-    public int richSize;
-    public int highDensSize;
-    public int utilSize;
-    public int maxHouse;
+    //public int smallSize;
+    //public int richSize;
+    //public int highDensSize;
+    //public int utilSize;
+    //public int maxHouse;
+    public int maxHouseSize;
 
     public float smallPerc;
     public float richPerc;
@@ -45,6 +47,8 @@ public class MainController : MonoBehaviour
     private BuildingCreator bc;
     private SurbanNodeGenerator sng;
     private houseMap hm;
+    private HouseCreator hc;
+    private RoadUseMap rum;
 
     // Start is called before the first frame update
     void Start()
@@ -54,6 +58,8 @@ public class MainController : MonoBehaviour
         hmg = controller.GetComponent<HeatmapGen>();
         sng = controller.GetComponent<SurbanNodeGenerator>();
         hm = controller.GetComponent<houseMap>();
+        hc = controller.GetComponent<HouseCreator>();
+        rum = controller.GetComponent<RoadUseMap>();
 
         citySize = citySize - (citySize % cityBlockSize); //makes sure the block size is a divisor of the actual size. 
         citySize++;
@@ -75,13 +81,20 @@ public class MainController : MonoBehaviour
             output = bc.createBuildings(maxSize, maxHeight, buildingGap, variance, buildingVariation) ? "Buildings successfully generated. " : "Building generation failed at some point";
             Debug.Log(output);
         }
+        if(generatePathing)
+        {
+            
+        }
         if(generateHouses)
         {
             output = sng.createSurbanNodemap(surbanSize, surbanBlockSize, CDSRand, cityNodeNumConnectors) ? "Suburban nodemap successfully generated" : "Suburban Node failed to generate";
             Debug.Log(output);
             output = hm.createHouseMap(smallPerc, richPerc, highDensPerc, utilPerc, schoolRatio) ? "Housemap successfully generated" : "Housemap failed to generate";
             Debug.Log(output);
+            output = hc.createHouses(maxHouseSize) ? "Houses successfully created": "Houses failed to generate properly";
+            Debug.Log(output);
         }
+        
     }
 
     // Update is called once per frame

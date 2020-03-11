@@ -30,7 +30,7 @@ public class House : MonoBehaviour
         create(x, y, z, rotation, type);
     }
 
-    private bool create(float a = 0, float b = 0, float c = 0, float d = 0, string e = "null")
+    private bool create(float a = 0, float b = 0.01f, float c = 0, float d = 0, string e = "null")
     {
         string type = e;
         float x = (float) a;
