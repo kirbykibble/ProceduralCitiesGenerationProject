@@ -68,6 +68,7 @@
     <Compile Include="Assets\Scripts\Building.cs" />
     <Compile Include="Assets\Scripts\BuildingCreator.cs" />
     <Compile Include="Assets\Scripts\cell.cs" />
+    <Compile Include="Assets\Scripts\cityFourIntersectionController.cs" />
     <Compile Include="Assets\Scripts\CityNodeGenerator.cs" />
     <Compile Include="Assets\Scripts\Deprecated Scripts\BuildingDeprecated.cs" />
     <Compile Include="Assets\Scripts\Deprecated Scripts\RoadUseMapDEPRECATED.cs" />
