@@ -183,7 +183,7 @@ public class RoadUseMap : MonoBehaviour
                         search(useMap, cnode[0], cnode[1], connectorToUse[0], connectorToUse[1]);
                         buildingPop--;
                         connectorUse--;
-
+                    
                         if(connectorUse <= 0 && changed)
                         {
                             connectorToUse = connectors[1];
@@ -390,6 +390,7 @@ public class RoadUseMap : MonoBehaviour
                 cellDetails[i, j].h = float.MaxValue;
                 cellDetails[i, j].parent_i = -1;
                 cellDetails[i, j].parent_j = -1;
+                Object.Destroy(t);
             }
         }
 

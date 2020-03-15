@@ -72,6 +72,7 @@
     <Compile Include="Assets\Scripts\Deprecated Scripts\BuildingDeprecated.cs" />
     <Compile Include="Assets\Scripts\Deprecated Scripts\RoadUseMapDEPRECATED.cs" />
     <Compile Include="Assets\Scripts\HeatmapGen.cs" />
+    <Compile Include="Assets\Scripts\HexInterCont.cs" />
     <Compile Include="Assets\Scripts\House.cs" />
     <Compile Include="Assets\Scripts\HouseCreator.cs" />
     <Compile Include="Assets\Scripts\houseMap.cs" />

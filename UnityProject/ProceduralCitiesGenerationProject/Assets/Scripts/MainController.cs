@@ -72,20 +72,20 @@ public class MainController : MonoBehaviour
         variance = variance > maxSize ? maxSize - 1 : variance;
         string output;
 
-        if (generateBuildings)
+        if(generatePathing)
         {
             output = hmg.generateHeatmap(citySize, heatmapRandomness, heatmapRandAmount) ? "Heatmap successfully generated" : "Heatmap generation failed";
             Debug.Log(output);
             output = cng.generateNode(citySize, cityBlockSize, cityNodeRemovalRand, cityNodeDiagRand, cityNodeNumConnectors) ? "City Node Successfully Generated" : "City node generation failed";
             Debug.Log(output);
+            rum.createUseMap();
+        }
+        if (generateBuildings)
+        {
             output = bc.createBuildings(maxSize, maxHeight, buildingGap, variance, buildingVariation) ? "Buildings successfully generated. " : "Building generation failed at some point";
             Debug.Log(output);
         }
-        if(generatePathing)
-        {
-            
-        }
-        if(generateHouses)
+        if (generateHouses)
         {
             output = sng.createSurbanNodemap(surbanSize, surbanBlockSize, CDSRand, cityNodeNumConnectors) ? "Suburban nodemap successfully generated" : "Suburban Node failed to generate";
             Debug.Log(output);
