@@ -35,7 +35,7 @@ public class cityFourIntersectionController : MonoBehaviour
     public string Wtype; //Will either be "SMALL", "MEDIUM" or "LARGE"
 
     // Start is called before the first frame update
-    void Start()
+    public void updateRoad()
     {
         road = this.gameObject.transform.Find("Road").gameObject;
         nLeft = this.gameObject.transform.Find("NLeft").gameObject;
@@ -84,10 +84,10 @@ public class cityFourIntersectionController : MonoBehaviour
             sWest.SetActive(true);
         }
 
-        if (sSouth.activeSelf) sSouth.transform.position = new Vector3(-8.2f, 0.2f, -8.2f);
-        if (sWest.activeSelf) sWest.transform.position = new Vector3(-8.2f, 0.2f, 8.2f);
-        if (sNorth.activeSelf) sNorth.transform.position = new Vector3(8.2f, 0.2f, 8.2f);
-        if (sEast.activeSelf) sEast.transform.position = new Vector3(8.2f, 0.2f, -8.2f);
+        if (sSouth.activeSelf && Stype == "LARGE") sSouth.transform.position += new Vector3(-8.2f, 0.2f, -8.2f);
+        if (sWest.activeSelf && Etype == "LARGE") sWest.transform.position += new Vector3(-8.2f, 0.2f, 8.2f);
+        if (sNorth.activeSelf && Ntype == "LARGE") sNorth.transform.position += new Vector3(8.2f, 0.2f, 8.2f);
+        if (sEast.activeSelf && Wtype == "LARGE") sEast.transform.position += new Vector3(8.2f, 0.2f, -8.2f);
 
         if (north)
         {
@@ -99,26 +99,26 @@ public class cityFourIntersectionController : MonoBehaviour
             }
             else if (Ntype == "MEDIUM") // is medium or small
             {
-                nRight.transform.position = new Vector3(6.75f, 0.1f, -9);
+                nRight.transform.position += new Vector3(6.75f, 0f, -0);
                 nRight.transform.localScale = new Vector3(2.5f, .2f, 2);
 
-                nLeft.transform.position = new Vector3(-6.75f, 0.1f, -9);
+                nLeft.transform.position += new Vector3(-6.75f, 0f, -0);
                 nLeft.transform.localScale = new Vector3(2.5f, .2f, 2);
                 if (sSouth.activeSelf)
                 {
-                    sSouth.transform.position = new Vector3(-5.8f, 0.2f, -8.2f);
+                    sSouth.transform.position += new Vector3(-5.8f, 0.2f, -8.2f);
                 }
             }
             else if (Ntype == "SMALL")
             {
-                nRight.transform.position = new Vector3(5.5f, 0.1f, -9);
+                nRight.transform.position += new Vector3(5.5f, 0f, -0);
                 nRight.transform.localScale = new Vector3(5, .2f, 2);
 
-                nLeft.transform.position = new Vector3(-5.5f, 0.1f, -9);
+                nLeft.transform.position += new Vector3(-5.5f, 0f, -0);
                 nLeft.transform.localScale = new Vector3(5, .2f, 2);
                 if (sSouth.activeSelf)
                 {
-                    sSouth.transform.position = new Vector3(-3.2f, 0.2f, -8.2f);
+                    sSouth.transform.position += new Vector3(-3.2f, 0.2f, -8.2f);
                 }
             }
             else
@@ -128,10 +128,10 @@ public class cityFourIntersectionController : MonoBehaviour
         }
         else
         {
-            nRight.transform.position = new Vector3(4, 0.1f, -9);
+            nRight.transform.position += new Vector3(4, 0f, -0);
             nRight.transform.localScale = new Vector3(8, .2f, 2);
 
-            nLeft.transform.position = new Vector3(-4, 0.1f, -9);
+            nLeft.transform.position += new Vector3(-4, 0f, -0);
             nLeft.transform.localScale = new Vector3(8, .2f, 2);
         }
         if(east)
@@ -143,26 +143,26 @@ public class cityFourIntersectionController : MonoBehaviour
             }
             else if (Etype == "MEDIUM")
             {
-                eRight.transform.position = new Vector3(-9f, 0.1f, -6.75f);
+                eRight.transform.position += new Vector3(-0f, 0f, -6.75f);
                 eRight.transform.localScale = new Vector3(2.5f, .2f, 2);
 
-                eLeft.transform.position = new Vector3(-9, 0.1f, 6.75f);
+                eLeft.transform.position += new Vector3(-0, 0f, 6.75f);
                 eLeft.transform.localScale = new Vector3(2.5f, .2f, 2);
                 if (sWest.activeSelf)
                 {
-                    sWest.transform.position = new Vector3(-8.2f, 0.2f, 5.8f);
+                    sWest.transform.position += new Vector3(-8.2f, 0.2f, 5.8f);
                 }
             }
             else if (Etype == "SMALL")
             {
-                eRight.transform.position = new Vector3(-9f, 0.1f, -5.5f);
+                eRight.transform.position += new Vector3(-0f, 0f, -5.5f);
                 eRight.transform.localScale = new Vector3(5, .2f, 2);
 
-                eLeft.transform.position = new Vector3(-9, 0.1f, 5.5f);
+                eLeft.transform.position += new Vector3(-0, 0f, 5.5f);
                 eLeft.transform.localScale = new Vector3(5, .2f, 2);
                 if (sWest.activeSelf)
                 {
-                    sWest.transform.position = new Vector3(-8.2f, 0.2f, 3.2f);
+                    sWest.transform.position += new Vector3(-8.2f, 0.2f, 3.2f);
                 }
             }
             else
@@ -172,10 +172,10 @@ public class cityFourIntersectionController : MonoBehaviour
         }
         else
         {
-            eRight.transform.position = new Vector3(-9f, 0.1f, -4f);
+            eRight.transform.position += new Vector3(-0f, 0f, -4f);
             eRight.transform.localScale = new Vector3(8, .2f, 2);
 
-            eLeft.transform.position = new Vector3(-9, 0.1f, 4);
+            eLeft.transform.position += new Vector3(-0, 0f, 4);
             eLeft.transform.localScale = new Vector3(8, .2f, 2);
         }
         if(south)
@@ -188,28 +188,28 @@ public class cityFourIntersectionController : MonoBehaviour
             }
             else if (Stype == "MEDIUM")
             {
-                sRight.transform.position = new Vector3(6.75f, 0.1f, 9);
+                sRight.transform.position += new Vector3(6.75f, 0f, 0);
                 sRight.transform.localScale = new Vector3(2.5f, .2f, 2);
 
-                sLeft.transform.position = new Vector3(-6.75f, 0.1f, 9);
+                sLeft.transform.position += new Vector3(-6.75f, 0f, 0);
                 sLeft.transform.localScale = new Vector3(2.5f, .2f, 2);
 
                 if (sNorth.activeSelf)
                 {
-                    sNorth.transform.position = new Vector3(5.8f, 0.2f, 8.2f);
+                    sNorth.transform.position += new Vector3(5.8f, 0.2f, 8.2f);
                 }
             }
             else if (Stype == "SMALL")
             {
-                sRight.transform.position = new Vector3(5.5f, 0.1f, 9);
+                sRight.transform.position += new Vector3(5.5f, 0f, 0);
                 sRight.transform.localScale = new Vector3(5, .2f, 2);
 
-                sLeft.transform.position = new Vector3(-5.5f, 0.1f, 9);
+                sLeft.transform.position += new Vector3(-5.5f, 0f, 0);
                 sLeft.transform.localScale = new Vector3(5, .2f, 2);
 
                 if (sNorth.activeSelf)
                 {
-                    sNorth.transform.position = new Vector3(3.2f, 0.2f, 8.2f);
+                    sNorth.transform.position += new Vector3(3.2f, 0.2f, 8.2f);
                 }
             }
             else
@@ -219,10 +219,10 @@ public class cityFourIntersectionController : MonoBehaviour
         }
         else
         {
-            sRight.transform.position = new Vector3(4, 0.1f, 9);
+            sRight.transform.position += new Vector3(4, 0f, 0);
             sRight.transform.localScale = new Vector3(8, .2f, 2);
 
-            sLeft.transform.position = new Vector3(-4, 0.1f, 9);
+            sLeft.transform.position += new Vector3(-4, 0f, 0);
             sLeft.transform.localScale = new Vector3(8, .2f, 2);
         }
         if(west)
@@ -234,27 +234,27 @@ public class cityFourIntersectionController : MonoBehaviour
             }
             else if (Wtype == "MEDIUM")
             {
-                wRight.transform.position = new Vector3(9f, 0.1f, -6.75f);
+                wRight.transform.position += new Vector3(0f, 0f, -6.75f);
                 wRight.transform.localScale = new Vector3(2.5f, .2f, 2);
 
-                wLeft.transform.position = new Vector3(9, 0.1f, 6.75f);
+                wLeft.transform.position += new Vector3(0, 0f, 6.75f);
                 wLeft.transform.localScale = new Vector3(2.5f, .2f, 2);
 
                 if (sEast.activeSelf)
                 {
-                    sEast.transform.position = new Vector3(8.2f, 0.2f, -5.8f);
+                    sEast.transform.position += new Vector3(8.2f, 0.2f, -5.8f);
                 }
             }
             else if (Wtype == "SMALL")
             {
-                wRight.transform.position = new Vector3(9f, 0.1f, -5.5f);
+                wRight.transform.position += new Vector3(0f, 0f, -5.5f);
                 wRight.transform.localScale = new Vector3(5, .2f, 2);
 
-                wLeft.transform.position = new Vector3(9, 0.1f, 5.5f);
+                wLeft.transform.position += new Vector3(0, 0f, 5.5f);
                 wLeft.transform.localScale = new Vector3(5, .2f, 2);
                 if (sEast.activeSelf)
                 {
-                    sEast.transform.position = new Vector3(8.2f, 0.2f, -3.2f);
+                    sEast.transform.position += new Vector3(8.2f, 0.2f, -3.2f);
                 }
             }
             else
@@ -264,10 +264,10 @@ public class cityFourIntersectionController : MonoBehaviour
         }
         else
         {
-            wRight.transform.position = new Vector3(9f, 0.1f, -4);
+            wRight.transform.position += new Vector3(0f, 0f, -4);
             wRight.transform.localScale = new Vector3(8, .2f, 2);
 
-            wLeft.transform.position = new Vector3(9, 0.1f, 4);
+            wLeft.transform.position += new Vector3(0, 0f, 4);
             wLeft.transform.localScale = new Vector3(8, .2f, 2);
         }
     }

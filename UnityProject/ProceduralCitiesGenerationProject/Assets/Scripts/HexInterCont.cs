@@ -33,7 +33,7 @@ public class HexInterCont : MonoBehaviour
     public bool west;
     public bool northWest;
 
-    void Start()
+    public void updateRoad()
     {
         n = this.gameObject.transform.Find("north").gameObject;
         ne = this.gameObject.transform.Find("northeast").gameObject;

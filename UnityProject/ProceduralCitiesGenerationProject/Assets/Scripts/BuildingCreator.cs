@@ -8,6 +8,7 @@ public class BuildingCreator : MonoBehaviour
     //test function for building.cs
     public GameObject controller;
     //public GameObject floor;
+    private cRoad c;
     private Building b;
 
     private Color bg = Color.black;
@@ -18,43 +19,32 @@ public class BuildingCreator : MonoBehaviour
     private Color outConnector = Color.magenta;
 
     private bool landmark = false;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        /*
-        //debug code.
-        b.createCirc(50, 200, 100, 100); //radius, height, x pos, z pos, y pos = 0
-        b.createCirc(40, 100, 100, 150);
-        b.createCirc(45, 150, 150, 100);
-        b.createCirc(30, 80, 150, 150);
-        
-        b.createCubic(30, 20, 200, 50, 50); //length, width, height, x pos, z pos, y pos = 0
-        b.createCubic(20, 20, 200, 0, 50);
-        b.createCubic(30, 40, 200, 50, 0);
-        b.createCubic(30, 30, 200, 0, 0);
-        b.createCubic(10, 30, 200, 100, 50);
-        */
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    private int size;
+    private List<Color> checker = new List<Color>();
+    private List<Color> checkerDiag = new List<Color>();
 
     public bool createBuildings(int maxSize, int maxHeight, int gap, int variance, float buildingVariation)
     {
+        checker.Add(road);
+        checker.Add(node);
+        checker.Add(outConnector);
+
+        checkerDiag.Add(diagonalRoad);
+        checkerDiag.Add(node);
+        checkerDiag.Add(outConnector);
+
         b = controller.GetComponent<Building>();
+        c = controller.GetComponent<cRoad>();
         Texture2D heatmap = null;
         Texture2D cNodeMap = null;
+        Texture2D usemap = null;
         byte[] fileData;
         float totalDens = 0.0f; // unused as of now. 
         float maxDens = 0.0f;
         float xOffset = 0.0f;
         float yOffset = 0.0f;
-        float roadSize = 10.0f; //temporary variable. Will update later.
-        
+        float roadOffset = 10.0f;
+
         if (File.Exists("Assets/Debug/HeatmapOut.png"))
         {
             fileData = File.ReadAllBytes("Assets/Debug/HeatmapOut.png");
@@ -79,6 +69,20 @@ public class BuildingCreator : MonoBehaviour
             Debug.Log(" ERROR: File not found");
             return false;
         }
+
+        if (File.Exists("Assets/Debug/usemap.png"))
+        {
+            fileData = File.ReadAllBytes("Assets/Debug/usemap.png");
+            usemap = new Texture2D(2, 2, TextureFormat.BGRA32, false);
+            usemap.LoadImage(fileData);
+            Debug.Log("Usemap successfully read");
+        }
+        else
+        {
+            Debug.Log("ERROR: File not found");
+            return false;
+        }
+        size = usemap.width;
 
         Vector3 floorPos = new Vector3((maxSize * heatmap.width) / 2, 1, (maxSize * heatmap.height) / 2);
         Vector3 floorSize = new Vector3((maxSize * heatmap.width) / 8, 1, (maxSize * heatmap.height) / 8);
@@ -169,6 +173,68 @@ public class BuildingCreator : MonoBehaviour
                         }
                     }
                 }
+                else if (curPixel == road)
+                {
+                    float xScale = (float)maxSize / 10;
+                    roadOffset = (float)maxSize / 2;
+                    float rotation = 0.0f;
+                    if (isNorthSouth(cNodeMap, x, y)) rotation = 90.0f;
+
+                    if (usemap.GetPixel(x, y).r >= 0.8f)
+                    {
+                        c.createBigRoad(xOffset + roadOffset, yOffset + roadOffset, rotation, xScale);
+                    }
+                    else if(usemap.GetPixel(x, y).r >= 0.4f)
+                    {
+                        c.createMedRoad(xOffset + roadOffset, yOffset + roadOffset, rotation, xScale);
+                    }
+                    else
+                    {
+                        c.createRoad(xOffset + roadOffset, yOffset + roadOffset, rotation, xScale);
+                    }                   
+                }
+                else if (curPixel == diagonalRoad)
+                {
+                    float xScale = (float)maxSize / 10;
+                    xScale = Mathf.Sqrt(Mathf.Pow(xScale, 2) * 2);
+                    roadOffset = (float)maxSize / 2;
+                    float rotation = 45.0f;
+                    if (isDiagNW(cNodeMap, x, y)) rotation = -45.0f;
+
+                    if ((float) usemap.GetPixel(x, y).r >= 0.8f)
+                    {
+                        c.createBigRoad(xOffset + roadOffset, yOffset + roadOffset, rotation, xScale);
+                    }
+                    else if ((float) usemap.GetPixel(x, y).r >= 0.4f)
+                    {
+                        c.createMedRoad(xOffset + roadOffset, yOffset + roadOffset, rotation, xScale);
+                    }
+                    else
+                    {
+                        c.createRoad(xOffset + roadOffset, yOffset + roadOffset, rotation, xScale);
+                    }
+                }
+                else if (curPixel == node)
+                {
+                    float scale = (float)maxSize / 20;
+                    roadOffset = (float)maxSize / 2;
+                    List<bool> op = getOpenRoads(cNodeMap, x, y);
+                    List<string> ty = getRoadTypes(usemap, x, y);
+
+                    if(isHex(cNodeMap, x, y))
+                    {
+                        c.createHexInt(xOffset + roadOffset, yOffset + roadOffset, 0, op[0], op[1], op[2], op[3], op[4], op[5], op[6], op[7], "null", "null", "null", "null", "null", "null", "null", "null", scale);
+                    }
+                    else // is regular intersection
+                    {
+                        // 2 5 8
+                        // 1 4 7 
+                        // 0 3 6
+                    
+                        c.createInter(xOffset + roadOffset, yOffset + roadOffset, 0, op[0], op[1], op[2], op[3], ty[3], ty[1], ty[5], ty[7], 1);
+                    }
+                }
+
                 yOffset += maxSize; // offset is equals to the max size. 
 
             }
@@ -178,6 +244,92 @@ public class BuildingCreator : MonoBehaviour
 
 
         return true;
+    }
+
+    bool isNorthSouth(Texture2D map, int x, int y)
+    {
+        if (y + 1 >= size || y - 1 < 0) return false;
+        if (checker.Contains(map.GetPixel(x, y + 1)) || checker.Contains(map.GetPixel(x, y - 1)))
+        {
+            return true;
+        }
+        return false;
+    }
+
+    bool isDiagNW(Texture2D map, int x, int y)
+    {
+        if (y + 1 >= size || y - 1 < 0 || x + 1 >= size || x - 1 < 0) return false;
+        if(checkerDiag.Contains(map.GetPixel(x + 1, y + 1)) || checkerDiag.Contains(map.GetPixel(x - 1, y - 1)))
+        {
+            return true; //means that the road is northeast / southwest bound
+        }
+        return false; // means that the road is northwest / southeast bound
+    }
+    bool isHex(Texture2D map, int x, int y)
+    {
+        for(int i = -1; i <= 1; i++)
+        {
+            for(int j = -1; j <= 1; j++)
+            {
+                if (map.GetPixel(x + i, y + j) == diagonalRoad) return true;
+            }
+        }
+        return false;
+    }
+
+    List<bool> getOpenRoads(Texture2D map, int x, int y)
+    {
+        List<bool> openRoads = new List<bool>();
+        if (checker.Contains(map.GetPixel(x, y - 1)) && y - 1 >= 0) openRoads.Add(true); // south
+        else openRoads.Add(false);
+
+        if (checker.Contains(map.GetPixel(x - 1, y)) && x - 1 >= 0) openRoads.Add(true); // west
+        else openRoads.Add(false);
+
+        if (checker.Contains(map.GetPixel(x, y + 1)) && y + 1 < size) openRoads.Add(true); // north
+        else openRoads.Add(false);
+
+        if (checker.Contains(map.GetPixel(x + 1, y)) && x + 1 < size) openRoads.Add(true); // east
+        else openRoads.Add(false);
+
+        //diags
+        if (checkerDiag.Contains(map.GetPixel(x - 1, y - 1)) && y - 1 >= 0 && x - 1 >= 0) openRoads.Add(true); // southwest
+        else openRoads.Add(false);
+
+        if (checkerDiag.Contains(map.GetPixel(x - 1, y + 1)) && x - 1 >= 0 && y + 1 < size) openRoads.Add(true); //northwest
+        else openRoads.Add(false);
+
+        if (checkerDiag.Contains(map.GetPixel(x + 1, y + 1)) && y + 1 < size && x + 1 < size) openRoads.Add(true); //northeast
+        else openRoads.Add(false);
+
+        if (checkerDiag.Contains(map.GetPixel(x + 1, y - 1)) && x + 1 < size && y - 1 >= 0) openRoads.Add(true); //southeast
+        else openRoads.Add(false);
+
+        return openRoads;
+    }
+
+    List<string> getRoadTypes(Texture2D map, int x, int y)
+    {
+        // x x x 
+        // x c x
+        // x x x
+
+        // 2 5 8
+        // 1 4 7 
+        // 0 3 6 
+        List<string> roadType = new List<string>();
+        for (int i = -1; i <= 1; i++)
+        {
+            for (int j = -1; j <= 1; j++)
+            {
+                Debug.Log((float)map.GetPixel(x + i, j + y).r);
+                if ((float) map.GetPixel(x + i, y + j).r >= 0.8f) roadType.Add("LARGE");
+                else if ((float) map.GetPixel(x + i, y + j).r >= 0.4f) roadType.Add("MEDIUM");
+                else roadType.Add("SMALL");
+            }
+        }
+
+        return roadType;
     }
 
 }
