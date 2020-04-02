@@ -4,10 +4,6 @@ using UnityEngine;
 using System.IO;
 using System.Linq;
 
-// A majority of the A* script below has been sourced from:
-// https://www.geeksforgeeks.org/a-search-algorithm/
-// Adapted for use in Unity and to be compatible with current maps.
-
 public class RoadUseMap : MonoBehaviour
 {
     private int smallHousePop = 1;

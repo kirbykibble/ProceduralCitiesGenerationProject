@@ -50,8 +50,14 @@ public class Building : MonoBehaviour
         float z = (float)f;
         float height = (float)c; // total height
 
-        float lowerHeight = Random.Range(7, 10);
+        //float lowerHeight = Random.Range(7, 10);
+
+        float lowerHeight = (height * 0.1f);
+        if (lowerHeight > 10) lowerHeight = 10;
+        if (lowerHeight < 5) lowerHeight = 5;
         float upperHeight = height - lowerHeight;
+        if (upperHeight < 10) upperHeight = 10;
+        height = lowerHeight + upperHeight;
 
         int idx = Random.Range(0, windows.Count);
         Texture chosenTexture = windows[idx];

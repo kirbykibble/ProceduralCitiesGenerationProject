@@ -10,17 +10,17 @@ public class cRoad : MonoBehaviour
     public GameObject intersection;
     public GameObject hexInter;
 
-    public bool createRoad(float x, float z, float rotation, float xs)
+    public bool createRoad(float x, float z, float rotation, float xs, float ys)
     {
-        return create("ROAD", x, z, rotation, t:xs);
+        return create("ROAD", x, z, rotation, t:xs, u:ys);
     }
-    public bool createMedRoad(float x, float z, float rotation, float xs)
+    public bool createMedRoad(float x, float z, float rotation, float xs, float ys)
     {
-        return create("MED", x, z, rotation, t: xs);
+        return create("MED", x, z, rotation, t: xs, u: ys);
     }
-    public bool createBigRoad(float x, float z, float rotation, float xs)
+    public bool createBigRoad(float x, float z, float rotation, float xs, float ys)
     {
-        return create("BIG", x, z, rotation, t: xs);
+        return create("BIG", x, z, rotation, t: xs, u: ys);
     }
     public bool createInter(float x, float z, float rotation, bool n, bool e, bool s, bool w, string nt, string et, string st, string wt, float xs)
     {
@@ -34,12 +34,12 @@ public class cRoad : MonoBehaviour
 
     private bool create(string type = "", float a = 0, float b = 0, float c = 0, bool d = false, bool e = false, bool f = false, bool g = false, bool h = false, bool i = false, bool j = false, bool k = false, string l = "", string m = "", string n = "", string o = "", string p = "", string q = "", string r = "", string s = "", float t = 1, float u = 1)
     {
+
         float x = (float)a;
         float z = (float)b;
         float rotation = (float)c;
         float xScale = (float)t;
         float yScale = (float)u;
-
 
         bool north = d;
         bool east = e;
@@ -70,17 +70,17 @@ public class cRoad : MonoBehaviour
             name = "SmallRoad";
             roadObj = Instantiate(road, new Vector3(x, 0, z), Quaternion.identity);
         }
-        if(type == "MED")
+        else if(type == "MED")
         {
             name = "MediumRoad";
             roadObj = Instantiate(medRoad, new Vector3(x, 0, z), Quaternion.identity);
         }
-        if(type == "BIG")
+        else if(type == "BIG")
         {
             name = "BigRoad";
             roadObj = Instantiate(bigroad, new Vector3(x, 0, z), Quaternion.identity);
         }
-        if(type == "INT")
+        else if(type == "INT")
         {
             name = "Intersection";
             roadObj = Instantiate(intersection, new Vector3(x, 0, z), Quaternion.identity);
@@ -97,7 +97,7 @@ public class cRoad : MonoBehaviour
 
             cfic.updateRoad();
         }
-        if(type == "HEX")
+        else if(type == "HEX")
         {
             name = "HexIntersection";
             roadObj = Instantiate(hexInter, new Vector3(x, 0, z), Quaternion.identity);
@@ -110,9 +110,25 @@ public class cRoad : MonoBehaviour
             hic.southEast = southeast;
             hic.southWest = southwest;
             hic.northWest = northwest;
+
+            hic.nType = northType;
+            hic.neType = northeastType;
+            hic.eType = eastType;
+            hic.seType = southeastType;
+            hic.sType = southType;
+            hic.swType = southwestType;
+            hic.wType = westType;
+            hic.nwType = northwestType;
             //not yet implemented road size types.
 
             hic.updateRoad();
+        }
+
+        else
+        {
+            Object.Destroy(roadObj);
+            Object.Destroy(outer);
+            return false;
         }
 
         outer.name = name;
@@ -120,6 +136,8 @@ public class cRoad : MonoBehaviour
         roadObj.transform.SetParent(outer.transform);
         roadObj.transform.localScale = new Vector3(xScale, 1, yScale);
         roadObj.transform.localEulerAngles = new Vector3(0, rotation, 0);
+
+        Object.Destroy(GameObject.Find("New Game Object"));
 
         return false;
     }

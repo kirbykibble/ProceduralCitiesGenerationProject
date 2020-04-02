@@ -7,27 +7,31 @@ public class cityFourIntersectionController : MonoBehaviour
     private GameObject road;
 
     //for stop signs
-    private GameObject sNorth;
-    private GameObject sSouth;
-    private GameObject sEast;
-    private GameObject sWest;
+    public GameObject sNorth;
+    public GameObject sSouth;
+    public GameObject sEast;
+    public GameObject sWest;
 
     public bool north;
     public bool south;
     public bool east;
     public bool west;
 
+    public int count = 0;
+
+    public string bug;
+
     //whether or not these directions are open. 
     //if true, it means that there is a road leading to this location.
-    private GameObject nLeft;
-    private GameObject sLeft;
-    private GameObject eLeft;
-    private GameObject wLeft;
-
-    private GameObject nRight;
-    private GameObject sRight;
-    private GameObject eRight;
-    private GameObject wRight;
+    public GameObject nLeft;
+    public GameObject sLeft;
+    public GameObject eLeft;
+    public GameObject wLeft;
+    
+    public GameObject nRight;
+    public GameObject sRight;
+    public GameObject eRight;
+    public GameObject wRight;
 
     public string Ntype; //Will either be "SMALL", "MEDIUM" or "LARGE"
     public string Etype; //Will either be "SMALL", "MEDIUM" or "LARGE"
@@ -58,25 +62,26 @@ public class cityFourIntersectionController : MonoBehaviour
         sEast.SetActive(false);
         sWest.SetActive(false);
 
-        int count = 0;
 
         if (!north) count++;
         if (!south) count++;
         if (!east) count++;
         if (!west) count++;
 
-        if (count == 3 || count >= 4) //if there are two closed road lanes. Meaning that this is a corner.
+
+        if (count >= 2) //a corner or end cap, we don't spawn lights
         {
-            Debug.Log("ERROR: There was an error in Road Generation.");
+            //do nothing
+            //Debug.Log("ERROR: There was an error in Road Generation.");
         }
-        else if (count == 1) // for a three way intersection
+        else if (count == 1) // for a three way intersection spawn one light
         {
             if (!north) sSouth.SetActive(true);
             if (!south) sNorth.SetActive(true);
             if (!east) sWest.SetActive(true);
             if (!west) sEast.SetActive(true);
         }
-        else //we don't do anything for two.
+        else //this is for 4 way intersection
         {
             sNorth.SetActive(true);
             sSouth.SetActive(true);
@@ -84,10 +89,10 @@ public class cityFourIntersectionController : MonoBehaviour
             sWest.SetActive(true);
         }
 
-        if (sSouth.activeSelf && Stype == "LARGE") sSouth.transform.position += new Vector3(-8.2f, 0.2f, -8.2f);
-        if (sWest.activeSelf && Etype == "LARGE") sWest.transform.position += new Vector3(-8.2f, 0.2f, 8.2f);
-        if (sNorth.activeSelf && Ntype == "LARGE") sNorth.transform.position += new Vector3(8.2f, 0.2f, 8.2f);
-        if (sEast.activeSelf && Wtype == "LARGE") sEast.transform.position += new Vector3(8.2f, 0.2f, -8.2f);
+        if (sSouth.activeSelf && (Stype == "LARGE" || !north)) sSouth.transform.position += new Vector3(-8.2f, 0.2f, -8.2f);
+        if (sWest.activeSelf && (Etype == "LARGE" || !east)) sWest.transform.position += new Vector3(-8.2f, 0.2f, 8.2f);
+        if (sNorth.activeSelf && (Ntype == "LARGE" || !south)) sNorth.transform.position += new Vector3(8.2f, 0.2f, 8.2f);
+        if (sEast.activeSelf && (Wtype == "LARGE" || !west)) sEast.transform.position += new Vector3(8.2f, 0.2f, -8.2f);
 
         if (north)
         {
@@ -252,8 +257,10 @@ public class cityFourIntersectionController : MonoBehaviour
 
                 wLeft.transform.position += new Vector3(0, 0f, 5.5f);
                 wLeft.transform.localScale = new Vector3(5, .2f, 2);
+                bug = "I shoulda write!!!";
                 if (sEast.activeSelf)
                 {
+                    bug = "I SHOULDA MOVED!!!";
                     sEast.transform.position += new Vector3(8.2f, 0.2f, -3.2f);
                 }
             }
