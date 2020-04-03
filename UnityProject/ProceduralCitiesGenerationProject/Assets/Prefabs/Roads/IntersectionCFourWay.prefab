@@ -614,6 +614,7 @@ MonoBehaviour:
   south: 1
   east: 1
   west: 1
+  count: 0
   bug: 
   nLeft: {fileID: 0}
   sLeft: {fileID: 0}
@@ -776,7 +777,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 1386e54f7e7bf784698555da95caf133, type: 2}
+  - {fileID: 2100000, guid: d5770ec949f1e8241bce4b374f4027be, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

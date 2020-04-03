@@ -7,6 +7,7 @@ public class MainController : MonoBehaviour
     public bool generateBuildings;
     public bool generateHouses;
     public bool generatePathing;
+    public bool connect;
 
     public int citySize;
     public int cityBlockSize;
@@ -16,7 +17,7 @@ public class MainController : MonoBehaviour
 
     public float cityNodeRemovalRand;
     public float cityNodeDiagRand;
-    public float cityNodeNumConnectors;
+    private float cityNodeNumConnectors = 1;
 
     public int surbanSize;
     public int surbanBlockSize;
@@ -49,6 +50,7 @@ public class MainController : MonoBehaviour
     private houseMap hm;
     private HouseCreator hc;
     private RoadUseMap rum;
+    private csConnector csc;
 
     // Start is called before the first frame update
     void Start()
@@ -60,6 +62,7 @@ public class MainController : MonoBehaviour
         hm = controller.GetComponent<houseMap>();
         hc = controller.GetComponent<HouseCreator>();
         rum = controller.GetComponent<RoadUseMap>();
+        csc = controller.GetComponent<csConnector>();
 
         citySize = citySize - (citySize % cityBlockSize); //makes sure the block size is a divisor of the actual size. 
         citySize++;
@@ -93,6 +96,18 @@ public class MainController : MonoBehaviour
             Debug.Log(output);
             output = hc.createHouses(maxHouseSize) ? "Houses successfully created": "Houses failed to generate properly";
             Debug.Log(output);
+        }
+        if(connect)
+        {
+            if(generateBuildings && generateHouses)
+            {
+                output = csc.connect(citySize, surbanSize, maxSize, maxHouseSize) ? "Connection successfully created" : "Connection failed to be created";
+                Debug.Log(output);
+            }
+            else
+            {
+                Debug.Log("ERROR: Cannot connect city and suburban when one isn't generated!!");
+            }
         }
         
     }

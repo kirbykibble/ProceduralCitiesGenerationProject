@@ -25,6 +25,7 @@ public class HouseCreator : MonoBehaviour
 
     private List<Color> checker = new List<Color>();
     private int size;
+    private int connectorCount;
 
     public bool createHouses(int maxSize)
     {
@@ -87,18 +88,24 @@ public class HouseCreator : MonoBehaviour
                 {
                     h.createHouse("SCHOOL", xOffset, yOffset, rotation: Rotation);
                 }
-                if (curPixel == road || curPixel == connector)
+                if (curPixel == road)
                 {
                     float xScale = (float)maxSize / 10;
                     float rotation = 0.0f;
                     if (isNorthSouth(houseMap, x, y)) rotation = 90.0f;
                     s.createRoad(xOffset, yOffset, rotation, xScale, xScale, 1);
                 }
-                if(curPixel == node)
+                if(curPixel == node || curPixel == connector)
                 {
+                    string temp = "";
+                    if (curPixel == connector)
+                    {
+                        connectorCount++;
+                        temp = "sConnector" + connectorCount;
+                    }
                     float xScale = (float)maxSize / 10;
                     List<bool> op = getOpenRoads(houseMap, x, y);
-                    s.createIntersection(xOffset, yOffset, op[0], op[1], op[2], op[3], xScale, xScale, 1);
+                    s.createIntersection(xOffset, yOffset, op[0], op[1], op[2], op[3], xScale, xScale, 1, nameOv:temp);
                 }
                 if(curPixel == cds)
                 {

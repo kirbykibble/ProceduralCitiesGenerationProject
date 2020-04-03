@@ -24,6 +24,8 @@ public class BuildingCreator : MonoBehaviour
     private List<Color> checkerDiag = new List<Color>();
     private List<Color> checkMatch = new List<Color>();
 
+    private int outConnectorsCreated = 0;
+
     public bool createBuildings(int maxSize, int maxHeight, int gap, int variance, float buildingVariation)
     {
         checker.Add(road);
@@ -242,6 +244,12 @@ public class BuildingCreator : MonoBehaviour
                 }
                 else if (curPixel == node || curPixel == outConnector)
                 {
+                    string nameOverride = "";
+                    if (curPixel == outConnector)
+                    {
+                        outConnectorsCreated++;
+                        nameOverride = "cConnector" + outConnectorsCreated;
+                    }
                     float scale = (float)maxSize / 20;
                     roadOffset = (float)maxSize / 2;
                     List<bool> op = getOpenRoads(cNodeMap, x, y);
@@ -256,7 +264,7 @@ public class BuildingCreator : MonoBehaviour
                         //public bool createHexInt(float x, float z, float rotation, bool n, bool e, bool s, bool w, bool ne, bool se, bool sw, bool nw, |||| string nt, string et, string st, string wt, string net, string set, string swt, string nwt,  |||| float xs)
 
                         scale = scale * 3.24444444f; //quite literally a magic number ? I needed the hex intersection to reach a size of 7.3 from a 2.25. so  this number scales properly.
-                        c.createHexInt(xOffset + roadOffset, yOffset + roadOffset, 0, op[0], op[1], op[2], op[3], op[4], op[5], op[6], op[7], ty[3], ty[1], ty[5], ty[7], ty[0], ty[2], ty[8], ty[6], scale);
+                        c.createHexInt(xOffset + roadOffset, yOffset + roadOffset, 0, op[0], op[1], op[2], op[3], op[4], op[5], op[6], op[7], ty[3], ty[1], ty[5], ty[7], ty[0], ty[2], ty[8], ty[6], scale, nameOverride);
                     }
                     else // is regular intersection
                     {
@@ -264,7 +272,7 @@ public class BuildingCreator : MonoBehaviour
                         // 1 4 7 
                         // 0 3 6
                     
-                        c.createInter(xOffset + roadOffset, yOffset + roadOffset, 0, op[0], op[1], op[2], op[3], ty[3], ty[1], ty[5], ty[7], scale);
+                        c.createInter(xOffset + roadOffset, yOffset + roadOffset, 0, op[0], op[1], op[2], op[3], ty[3], ty[1], ty[5], ty[7], scale, nameOverride);
                     }
                 }
 

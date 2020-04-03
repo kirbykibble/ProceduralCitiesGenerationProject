@@ -12,6 +12,8 @@ public class Building : MonoBehaviour
     public float multipleDoorRand;
     public float heliRand;
 
+    public GameObject city;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -426,5 +428,7 @@ public class Building : MonoBehaviour
 
         building.transform.position = bPos;
         building.transform.eulerAngles = new Vector3(0, rotation, 0);
+
+        building.transform.SetParent(city.transform);
     }
 }

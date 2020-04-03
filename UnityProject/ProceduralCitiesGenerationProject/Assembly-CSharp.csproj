@@ -70,9 +70,10 @@
     <Compile Include="Assets\Scripts\cell.cs" />
     <Compile Include="Assets\Scripts\cityFourIntersectionController.cs" />
     <Compile Include="Assets\Scripts\CityNodeGenerator.cs" />
-    <Compile Include="Assets\Scripts\Cleanup.cs" />
     <Compile Include="Assets\Scripts\cRoad.cs" />
+    <Compile Include="Assets\Scripts\csConnector.cs" />
     <Compile Include="Assets\Scripts\Deprecated Scripts\BuildingDeprecated.cs" />
+    <Compile Include="Assets\Scripts\Deprecated Scripts\Cleanup.cs" />
     <Compile Include="Assets\Scripts\Deprecated Scripts\RoadUseMapDEPRECATED.cs" />
     <Compile Include="Assets\Scripts\HeatmapGen.cs" />
     <Compile Include="Assets\Scripts\HexInterCont.cs" />

@@ -205,9 +205,9 @@ public class SurbanNodeGenerator : MonoBehaviour
         {
             for (int y = 0; y < size; y += blockSize)
             {
-                if (Random.value < chance && nodeMap.GetPixel(size, y) == node)
+                if (Random.value < chance && nodeMap.GetPixel(size - 1, y) == node)
                 {
-                    nodeMap.SetPixel(size, y, outConnector);
+                    nodeMap.SetPixel(size - 1, y, outConnector);
                     count++;
                 }
                 if (count >= numConnectors)

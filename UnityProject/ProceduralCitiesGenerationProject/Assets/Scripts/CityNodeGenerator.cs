@@ -81,7 +81,7 @@ public class CityNodeGenerator : MonoBehaviour
         }
 
         //creates diagonal connections.
-        for (int x = 0; x < size; x += blockSize)
+        for (int x = blockSize; x < size; x += blockSize)
         {
             for (int y = 0; y < size; y += blockSize)
             {
@@ -90,7 +90,7 @@ public class CityNodeGenerator : MonoBehaviour
                     nodeMap.SetPixel(x + 1, y + 1, diagonalRoad);
                     nodeMap.SetPixel(x + blockSize - 1, y + blockSize - 1, diagonalRoad);
                 }
-                if (x - 1 > 0 && y + 1 < size && Random.value < diagRand && diagCheck(nodeMap, false, x, y)) //if the top left connection isn't out of bounds
+                if (x - 1 > 0 && y + 1 < size && Random.value < diagRand && diagCheck(nodeMap, false, x, y) && x - blockSize != 0) //if the top left connection isn't out of bounds
                 {
                     nodeMap.SetPixel(x - 1, y + 1, diagonalRoad);
                     nodeMap.SetPixel(x - blockSize + 1, y + blockSize - 1, diagonalRoad);
@@ -199,19 +199,19 @@ public class CityNodeGenerator : MonoBehaviour
         int count = 0;
         int nCount = 0;
 
-        if(y+1 > size || map.GetPixel(x, y + 1) == noConnection)
+        if(y+1 >= size || map.GetPixel(x, y + 1) == noConnection)
         {
             count++;
         }
-        if (x + 1 > size || map.GetPixel(x+1,y) == noConnection)
+        if (x + 1 >= size || map.GetPixel(x+1,y) == noConnection)
         {
             count++;
         }
-        if (y - 1 < size || map.GetPixel(x, y - 1) == noConnection)
+        if (y - 1 < 0 || map.GetPixel(x, y - 1) == noConnection)
         {
             count++;
         }
-        if (x - 1 < size || map.GetPixel(x-1,y) == noConnection)
+        if (x - 1 < 0 || map.GetPixel(x-1,y) == noConnection)
         {
             count++;
         }

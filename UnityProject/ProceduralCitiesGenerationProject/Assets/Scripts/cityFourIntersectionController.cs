@@ -17,6 +17,7 @@ public class cityFourIntersectionController : MonoBehaviour
     public bool east;
     public bool west;
 
+
     public int count = 0;
 
     public string bug;

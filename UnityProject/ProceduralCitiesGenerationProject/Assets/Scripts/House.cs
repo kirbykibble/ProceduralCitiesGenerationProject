@@ -12,6 +12,8 @@ public class House : MonoBehaviour
     public GameObject school;
     public GameObject uni;
 
+    public GameObject subUrban;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -94,6 +96,8 @@ public class House : MonoBehaviour
         house.transform.SetParent(outer.transform);
         house.transform.localScale = new Vector3(10, 10, 10);
         house.transform.localEulerAngles = new Vector3(0, rot, 0);
+
+        outer.transform.SetParent(subUrban.transform);
 
         return true;
     }

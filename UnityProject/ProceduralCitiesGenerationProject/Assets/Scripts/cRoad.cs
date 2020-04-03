@@ -9,6 +9,7 @@ public class cRoad : MonoBehaviour
     public GameObject bigroad;
     public GameObject intersection;
     public GameObject hexInter;
+    public GameObject city;
 
     public bool createRoad(float x, float z, float rotation, float xs, float ys)
     {
@@ -22,17 +23,17 @@ public class cRoad : MonoBehaviour
     {
         return create("BIG", x, z, rotation, t: xs, u: ys);
     }
-    public bool createInter(float x, float z, float rotation, bool n, bool e, bool s, bool w, string nt, string et, string st, string wt, float xs)
+    public bool createInter(float x, float z, float rotation, bool n, bool e, bool s, bool w, string nt, string et, string st, string wt, float xs, string nameOv)
     {
-        return create("INT", x, z, rotation, n, e, s, w, l:nt, m:et, n:st, o:wt, t:xs, u:xs);
+        return create("INT", x, z, rotation, n, e, s, w, l:nt, m:et, n:st, o:wt, t:xs, u:xs, v:nameOv);
     }
-    public bool createHexInt(float x, float z, float rotation, bool n, bool e, bool s, bool w, bool ne, bool se, bool sw, bool nw, string nt, string et, string st, string wt, string net, string set, string swt, string nwt, float xs)
+    public bool createHexInt(float x, float z, float rotation, bool n, bool e, bool s, bool w, bool ne, bool se, bool sw, bool nw, string nt, string et, string st, string wt, string net, string set, string swt, string nwt, float xs, string nameOv)
     {
-        return create("HEX", x, z, rotation, n, e, s, w, ne, se, sw, nw, nt, et, st, wt, net, set, swt, nwt, t: xs, u: xs);
+        return create("HEX", x, z, rotation, n, e, s, w, ne, se, sw, nw, nt, et, st, wt, net, set, swt, nwt, t: xs, u: xs, v:nameOv);
     }
 
 
-    private bool create(string type = "", float a = 0, float b = 0, float c = 0, bool d = false, bool e = false, bool f = false, bool g = false, bool h = false, bool i = false, bool j = false, bool k = false, string l = "", string m = "", string n = "", string o = "", string p = "", string q = "", string r = "", string s = "", float t = 1, float u = 1)
+    private bool create(string type = "", float a = 0, float b = 0, float c = 0, bool d = false, bool e = false, bool f = false, bool g = false, bool h = false, bool i = false, bool j = false, bool k = false, string l = "", string m = "", string n = "", string o = "", string p = "", string q = "", string r = "", string s = "", float t = 1, float u = 1, string v = "")
     {
 
         float x = (float)a;
@@ -61,6 +62,7 @@ public class cRoad : MonoBehaviour
         string northwestType = s;
 
         string name = " null ";
+        string nameOverride = v;
 
         GameObject roadObj = new GameObject();
         GameObject outer = new GameObject();
@@ -83,6 +85,12 @@ public class cRoad : MonoBehaviour
         else if(type == "INT")
         {
             name = "Intersection";
+            if (nameOverride != "")
+            {
+                name = nameOverride;
+                east = true;
+                eastType = "SMALL";
+            }
             roadObj = Instantiate(intersection, new Vector3(x, 0, z), Quaternion.identity);
             cityFourIntersectionController cfic = roadObj.GetComponent<cityFourIntersectionController>();
             cfic.north = north;
@@ -100,6 +108,12 @@ public class cRoad : MonoBehaviour
         else if(type == "HEX")
         {
             name = "HexIntersection";
+            if(nameOverride != "")
+            {
+                name = nameOverride;
+                east = true;
+                eastType = "SMALL";
+            }
             roadObj = Instantiate(hexInter, new Vector3(x, 0, z), Quaternion.identity);
             HexInterCont hic = roadObj.GetComponent<HexInterCont>();
             hic.north = north;
@@ -137,7 +151,9 @@ public class cRoad : MonoBehaviour
         roadObj.transform.localScale = new Vector3(xScale, 1, yScale);
         roadObj.transform.localEulerAngles = new Vector3(0, rotation, 0);
 
-        Object.Destroy(GameObject.Find("New Game Object"));
+        outer.transform.SetParent(city.transform);
+
+        //Object.Destroy(GameObject.Find("New Game Object"));
 
         return false;
     }
