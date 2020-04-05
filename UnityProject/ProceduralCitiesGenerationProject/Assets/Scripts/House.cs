@@ -96,6 +96,7 @@ public class House : MonoBehaviour
         house.transform.SetParent(outer.transform);
         house.transform.localScale = new Vector3(10, 10, 10);
         house.transform.localEulerAngles = new Vector3(0, rot, 0);
+        house.gameObject.tag = "house";
 
         outer.transform.SetParent(subUrban.transform);
 

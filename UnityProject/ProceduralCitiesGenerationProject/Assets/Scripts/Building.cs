@@ -428,6 +428,7 @@ public class Building : MonoBehaviour
 
         building.transform.position = bPos;
         building.transform.eulerAngles = new Vector3(0, rotation, 0);
+        building.gameObject.tag = "building";
 
         building.transform.SetParent(city.transform);
     }

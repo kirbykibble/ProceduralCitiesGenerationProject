@@ -44,7 +44,9 @@ public class csConnector : MonoBehaviour
         float scale = (float)surbanMaxSize / 10 * 2 * 0.882352941f;
         
         roadObj.transform.localScale = new Vector3(scale * 4.16666667f, 1, scale);
+        return true;
 
-        return false;
+
+        //return false;
     }
 }

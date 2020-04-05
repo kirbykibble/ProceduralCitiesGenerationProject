@@ -137,6 +137,9 @@ public class RoadUseMap : MonoBehaviour
             }
         }
 
+        byte[] output2 = useMap.EncodeToPNG();
+        File.WriteAllBytes(Application.dataPath + "/../Assets/Debug/usemapUT.png", output2);
+
         Debug.Log("Connector Use" + connectorUse);
         float redAmt = 0;
 
@@ -160,6 +163,9 @@ public class RoadUseMap : MonoBehaviour
             }
         }
 
+
+
+
         List<int> connectorToUse = connectors[0];
         bool changed = true;
 
@@ -176,7 +182,7 @@ public class RoadUseMap : MonoBehaviour
                         
                         List<int> cnode = closestNode(useMap, x, y);
                         //Debug.Log("END NODE: " + connectorToUse[0] + ", " + connectorToUse[1]);
-                        search(useMap, cnode[0], cnode[1], connectorToUse[0], connectorToUse[1]);
+                        search(useMap, cnode[0], cnode[1], connectorToUse[0], connectorToUse[1], false);
                         buildingPop--;
                         connectorUse--;
                     
@@ -266,9 +272,14 @@ public class RoadUseMap : MonoBehaviour
         return coords;
     }
 
-    bool isValid(int x, int y)
+    bool isValid(int x, int y, int size)
     {
-        return (x >= 0 && x < mapSize && y >= 0 && y < mapSize);
+        return (x >= 0 && x < size && y >= 0 && y < size);
+    }
+
+    bool isOverPop(Texture2D map, int x, int y)
+    {
+        return (map.GetPixel(x, y).r >= 1);
     }
 
     bool isUnBlocked(Texture2D map, int x, int y)
@@ -333,8 +344,9 @@ public class RoadUseMap : MonoBehaviour
         }
     }
 
-    bool search(Texture2D map, int x, int y, int dx, int dy)
+    public bool search(Texture2D map, int x, int y, int dx, int dy, bool ignoreLimits, int sizeOverride = 0)
     {
+        if(sizeOverride != 0) mapSize = sizeOverride;
         //Debug.Log("Calculating from: [" + x + ", " + y + "] To Destination: [" + dx + ", " + dy + "]");
         //for ease of reading
         int startX = x;
@@ -342,14 +354,14 @@ public class RoadUseMap : MonoBehaviour
         int destX = dx;
         int destY = dy;
 
-        if (isValid(startX, startY) == false)
+        if (isValid(startX, startY, mapSize) == false)
         {
             Debug.Log("Start isn't valid!");
             return false;
         }
-        if (isValid(destX, destY) == false)
+        if (isValid(destX, destY, mapSize) == false)
         {
-            //Debug.Log("End isn't valid!");
+            Debug.Log("End isn't valid!");
             return false;
         }
         if (isUnBlocked(map, startX, startY) == false || isUnBlocked(map, destX, destY) == false)
@@ -433,7 +445,7 @@ public class RoadUseMap : MonoBehaviour
            */
 
             // For West
-            if (isValid(i - 1, j) == true)
+            if (isValid(i - 1, j, mapSize) == true && (ignoreLimits || !isOverPop(map, x, y)))
             {
                 //if the destination cell is the same as the current successor
                 if(isDestination(i - 1, j, destX, destY) == true)
@@ -480,7 +492,7 @@ public class RoadUseMap : MonoBehaviour
             }
 
             //For East
-            if(isValid(i + 1, j) == true)
+            if(isValid(i + 1, j, mapSize) == true && (ignoreLimits || !isOverPop(map, x, y)))
             {
                 if (isDestination(i + 1, j, destX, destY) == true) {
                     cellDetails[i + 1, j].parent_i = i;
@@ -516,7 +528,7 @@ public class RoadUseMap : MonoBehaviour
             }
 
             //for North
-            if (isValid(i, j + 1) == true)
+            if (isValid(i, j + 1, mapSize) == true && (ignoreLimits || !isOverPop(map, x, y)))
             {
                 if (isDestination(i, j + 1, destX, destY) == true)
                 {
@@ -553,7 +565,7 @@ public class RoadUseMap : MonoBehaviour
             }
 
             //For South
-            if (isValid(i, j - 1) == true)
+            if (isValid(i, j - 1, mapSize) == true && (ignoreLimits || !isOverPop(map, x, y)))
             {
                 if (isDestination(i, j - 1, destX, destY) == true)
                 {
@@ -590,7 +602,7 @@ public class RoadUseMap : MonoBehaviour
             }
 
             //North West
-            if (isValid(i - 1, j + 1) == true)
+            if (isValid(i - 1, j + 1, mapSize) == true && (ignoreLimits || !isOverPop(map, x, y)))
             {
                 if (isDestination(i - 1, j + 1, destX, destY) == true)
                 {
@@ -627,7 +639,7 @@ public class RoadUseMap : MonoBehaviour
             }
 
             //South West
-            if (isValid(i - 1, j - 1) == true)
+            if (isValid(i - 1, j - 1, mapSize) == true && (ignoreLimits || !isOverPop(map, x, y)))
             {
                 if (isDestination(i - 1, j - 1, destX, destY) == true)
                 {
@@ -664,7 +676,7 @@ public class RoadUseMap : MonoBehaviour
             }
 
             //North East
-            if (isValid(i + 1, j + 1) == true)
+            if (isValid(i + 1, j + 1, mapSize) == true && (ignoreLimits || !isOverPop(map, x, y)))
             {
                 if (isDestination(i + 1, j + 1, destX, destY) == true)
                 {
@@ -701,7 +713,7 @@ public class RoadUseMap : MonoBehaviour
             }
 
             //South East
-            if (isValid(i + 1, j - 1) == true)
+            if (isValid(i + 1, j - 1, mapSize) == true && (ignoreLimits || !isOverPop(map, x, y)))
             {
                 if (isDestination(i + 1, j - 1, destX, destY) == true)
                 {
@@ -742,7 +754,13 @@ public class RoadUseMap : MonoBehaviour
 
         if (foundDest == false)
         {
-            Debug.Log("ERROR: Unable to Reach Destination");
+            if (ignoreLimits == false) {
+                search(map, x, y, dx, dy, true);
+            }
+            else {
+                Debug.Log("ERROR: Unable to Reach Destination");
+                return false;
+            }
             //printCellDetails(cellDetails); //Debug Script
         }
 

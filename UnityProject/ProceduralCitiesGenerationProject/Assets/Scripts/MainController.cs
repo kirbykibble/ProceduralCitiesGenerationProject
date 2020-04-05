@@ -8,6 +8,7 @@ public class MainController : MonoBehaviour
     public bool generateHouses;
     public bool generatePathing;
     public bool connect;
+    public bool test;
 
     public int citySize;
     public int cityBlockSize;
@@ -17,6 +18,7 @@ public class MainController : MonoBehaviour
 
     public float cityNodeRemovalRand;
     public float cityNodeDiagRand;
+    public float cityNodeNewRand;
     private float cityNodeNumConnectors = 1;
 
     public int surbanSize;
@@ -51,6 +53,9 @@ public class MainController : MonoBehaviour
     private HouseCreator hc;
     private RoadUseMap rum;
     private csConnector csc;
+    private audioController ac;
+    private FloorResizer fs;
+    private UnitTest ut;
 
     // Start is called before the first frame update
     void Start()
@@ -63,6 +68,9 @@ public class MainController : MonoBehaviour
         hc = controller.GetComponent<HouseCreator>();
         rum = controller.GetComponent<RoadUseMap>();
         csc = controller.GetComponent<csConnector>();
+        ac = controller.GetComponent<audioController>();
+        fs = controller.GetComponent<FloorResizer>();
+        ut = controller.GetComponent<UnitTest>();
 
         citySize = citySize - (citySize % cityBlockSize); //makes sure the block size is a divisor of the actual size. 
         citySize++;
@@ -79,13 +87,15 @@ public class MainController : MonoBehaviour
         {
             output = hmg.generateHeatmap(citySize, heatmapRandomness, heatmapRandAmount) ? "Heatmap successfully generated" : "Heatmap generation failed";
             Debug.Log(output);
-            output = cng.generateNode(citySize, cityBlockSize, cityNodeRemovalRand, cityNodeDiagRand, cityNodeNumConnectors) ? "City Node Successfully Generated" : "City node generation failed";
+            output = cng.generateNode(citySize, cityBlockSize, cityNodeRemovalRand, cityNodeDiagRand, cityNodeNumConnectors, cityNodeNewRand) ? "City Node Successfully Generated" : "City node generation failed";
             Debug.Log(output);
             rum.createUseMap();
         }
         if (generateBuildings)
         {
             output = bc.createBuildings(maxSize, maxHeight, buildingGap, variance, buildingVariation) ? "Buildings successfully generated. " : "Building generation failed at some point";
+            Debug.Log(output);
+            output = ac.placeCityAudio(citySize, maxSize) ? "City Audio placed" : "City audio failed to place";
             Debug.Log(output);
         }
         if (generateHouses)
@@ -96,6 +106,8 @@ public class MainController : MonoBehaviour
             Debug.Log(output);
             output = hc.createHouses(maxHouseSize) ? "Houses successfully created": "Houses failed to generate properly";
             Debug.Log(output);
+            output = ac.placeSurbanAudio(surbanSize, maxHouseSize) ? "Audio placed" : "Audio failed to place";
+            Debug.Log(output);
         }
         if(connect)
         {
@@ -103,11 +115,16 @@ public class MainController : MonoBehaviour
             {
                 output = csc.connect(citySize, surbanSize, maxSize, maxHouseSize) ? "Connection successfully created" : "Connection failed to be created";
                 Debug.Log(output);
+                fs.resizeFloor(citySize, surbanSize, maxSize, maxHouseSize);
             }
             else
             {
                 Debug.Log("ERROR: Cannot connect city and suburban when one isn't generated!!");
             }
+        }
+        if(test)
+        {
+            ut.test();
         }
         
     }

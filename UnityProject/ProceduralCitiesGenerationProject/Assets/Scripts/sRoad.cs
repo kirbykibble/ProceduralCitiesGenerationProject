@@ -86,6 +86,7 @@ public class sRoad : MonoBehaviour
         roadObj.transform.SetParent(outer.transform);
         roadObj.transform.localScale = new Vector3(xScale, yScale, zScale);
         roadObj.transform.localEulerAngles = new Vector3(0, rotation, 0);
+        roadObj.gameObject.tag = "sRoad";
 
         outer.transform.SetParent(subUrban.transform);
 

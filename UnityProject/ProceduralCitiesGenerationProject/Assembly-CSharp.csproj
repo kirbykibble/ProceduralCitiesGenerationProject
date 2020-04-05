@@ -65,6 +65,7 @@
     <Compile Include="Assets\ImportedAssets\Barrier Pack\Scripts\ContrastStretch.cs" />
     <Compile Include="Assets\ImportedAssets\Barrier Pack\Scripts\GlobalFog.cs" />
     <Compile Include="Assets\ImportedAssets\Barrier Pack\Scripts\PostEffectsBase.cs" />
+    <Compile Include="Assets\Scripts\audioController.cs" />
     <Compile Include="Assets\Scripts\Building.cs" />
     <Compile Include="Assets\Scripts\BuildingCreator.cs" />
     <Compile Include="Assets\Scripts\cell.cs" />
@@ -75,6 +76,7 @@
     <Compile Include="Assets\Scripts\Deprecated Scripts\BuildingDeprecated.cs" />
     <Compile Include="Assets\Scripts\Deprecated Scripts\Cleanup.cs" />
     <Compile Include="Assets\Scripts\Deprecated Scripts\RoadUseMapDEPRECATED.cs" />
+    <Compile Include="Assets\Scripts\FloorResizer.cs" />
     <Compile Include="Assets\Scripts\HeatmapGen.cs" />
     <Compile Include="Assets\Scripts\HexInterCont.cs" />
     <Compile Include="Assets\Scripts\House.cs" />
@@ -86,6 +88,7 @@
     <Compile Include="Assets\Scripts\RoadUseMap.cs" />
     <Compile Include="Assets\Scripts\sRoad.cs" />
     <Compile Include="Assets\Scripts\SurbanNodeGenerator.cs" />
+    <Compile Include="Assets\Scripts\UnitTest.cs" />
     <None Include="Assets\ImportedAssets\Barrier Pack\Shaders\Contrast Stretch\MinMaxReduction.shader" />
     <None Include="Assets\ImportedAssets\Barrier Pack\Shaders\Contrast Stretch\Apply.shader" />
     <None Include="Assets\ImportedAssets\Low Poly Buildings Lite\ReadMe.txt" />

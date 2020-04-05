@@ -155,11 +155,11 @@ public class HouseCreator : MonoBehaviour
 
     bool isSchoolCenter(Texture2D map, int x, int y)
     {
-        if(map.GetPixel(x - 1, y) == school && map.GetPixel(x - 2, y) == school)
+        if(map.GetPixel(x - 1, y) == school && map.GetPixel(x + 1, y) == school)
         {
             return true;
         }
-        else if (map.GetPixel(x, y + 1) == school && map.GetPixel(x, y + 2) == school)
+        else if (map.GetPixel(x, y + 1) == school && map.GetPixel(x, y - 1) == school)
         {
             return true;
         }
