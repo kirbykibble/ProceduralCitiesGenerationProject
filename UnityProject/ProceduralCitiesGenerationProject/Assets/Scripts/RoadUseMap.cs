@@ -356,12 +356,12 @@ public class RoadUseMap : MonoBehaviour
 
         if (isValid(startX, startY, mapSize) == false)
         {
-            Debug.Log("Start isn't valid!");
+            //Debug.Log("Start isn't valid!");
             return false;
         }
         if (isValid(destX, destY, mapSize) == false)
         {
-            Debug.Log("End isn't valid!");
+            //Debug.Log("End isn't valid!");
             return false;
         }
         if (isUnBlocked(map, startX, startY) == false || isUnBlocked(map, destX, destY) == false)

@@ -9,6 +9,7 @@ public class MainController : MonoBehaviour
     public bool generatePathing;
     public bool connect;
     public bool test;
+    public bool createTest;
 
     public int citySize;
     public int cityBlockSize;
@@ -56,6 +57,8 @@ public class MainController : MonoBehaviour
     private audioController ac;
     private FloorResizer fs;
     private UnitTest ut;
+    private Cleanup c;
+    private testCreator tc;
 
     // Start is called before the first frame update
     void Start()
@@ -71,6 +74,8 @@ public class MainController : MonoBehaviour
         ac = controller.GetComponent<audioController>();
         fs = controller.GetComponent<FloorResizer>();
         ut = controller.GetComponent<UnitTest>();
+        c = controller.GetComponent<Cleanup>();
+        tc = controller.GetComponent<testCreator>();
 
         citySize = citySize - (citySize % cityBlockSize); //makes sure the block size is a divisor of the actual size. 
         citySize++;
@@ -126,7 +131,11 @@ public class MainController : MonoBehaviour
         {
             ut.test();
         }
-        
+        if(createTest)
+        {
+            tc.createTests();
+        }
+        //c.clean(); //Doesn't work
     }
 
     // Update is called once per frame
